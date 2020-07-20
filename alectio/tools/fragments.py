@@ -26,7 +26,7 @@ MODELS_QUERY_FRAGMENT = """
     }
 """
 
-MODEL_QUERY_FRAGEMENT = """
+MODEL_QUERY_FRAGMENT = """
     query modelQuery($id: String!) {
         model(id: $id) {
             pk, 
@@ -50,8 +50,8 @@ PROJECTS_QUERY_FRAGMENT = """
 
 
 PROJECT_QUERY_FRAGMENT = """
-    query projectQuery($id: String!) {
-        project(id: $id) {
+    query projectQuery($userId: String!, $projectId: String!) {
+        project(userId: $userId, projectId: $projectId) {
             pk, 
             sk,
             name,

@@ -31,7 +31,8 @@ class AlectioClient:
         # cli user settings
         self._settings = {
             'git_remote': "origin",
-            'base_url': "https://api.alectio.com"
+            # 'base_url': "https://api.alectio.com"
+            'base_url': "http://localhost:5005"
         }
 
         self._endpoint = f'{self._settings["base_url"]}/graphql'
@@ -50,7 +51,7 @@ class AlectioClient:
         )
 
         # need to retrive user_id based on token @ DEVI from OPENID 
-        # self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
+        self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
         # compnay id = 7774e1ca972811eaad5238c986352c36
 
     def projects(self, user_id):
@@ -76,7 +77,7 @@ class AlectioClient:
             "id": str(project_id),
         }
         experiments_query  = self._client.execute(query, params)['experiments']
-        project_experiments = [Experiment(self._client, extract_id(item['sk'], item)) for item in experiments_query]
+        project_experiments = [Experiment(self._client, extract_id(item['sk']), item) for item in experiments_query]
         return project_experiments
 
     # grab user id + project id
@@ -87,7 +88,11 @@ class AlectioClient:
         """
         # also need to pass the user id 
         query = gql(PROJECT_QUERY_FRAGMENT)
-        project_query = self._client.execute(query)['project'][0]
+        params = {
+            "userId": str(self._user_id),
+            "projectId": str(project_id)
+        }
+        project_query = self._client.execute(query, params)['project'][0]
         user_project = Project(self._client, project_query, project_id)
         return user_project
 
@@ -109,7 +114,7 @@ class AlectioClient:
         retrieve a single user model
         :params: project_id - a uuid
         """
-        query = gql(MODE_QUERY_FRAGMENT)
+        query = gql(MODEL_QUERY_FRAGMENT)
         params = {
             "id": str(model_id),
         }
