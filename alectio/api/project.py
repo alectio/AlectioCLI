@@ -41,6 +41,14 @@ class Project(BaseAttribute):
         """
         return 
 
+
+    def update_ip_port(self, ip, port):
+        """
+        update a project's ip and port 
+        """
+        
+        return
+
     def experiments(self):
         """
         retreive experiments that belong to a project
@@ -52,7 +60,6 @@ class Project(BaseAttribute):
             "id": str(self._id),
         }
         experiments_query  = self._client.execute(query, params)['experiments']
-        #TODO: this needs to be an iterable, i.e show n records per request. - A.Y 
         project_experiments = [Experiment(self._client, extract_id(item['sk']), item) for item in experiments_query]
         return project_experiments
 
