@@ -52,32 +52,39 @@ class Project(BaseAttribute):
         return 
 
 
-    def update_ip_port(self, ip_addr, port):
+    def update_ip_port(self, ip_addr=None, port=None):
         """
         update a project's ip and port 
         :params: ip_addr - ip address user intends to modify 
         :params: port - port the user intends to change
         """
-        # check if the user inputted a valid ip port
-        if port > 65535 or port < 0:
-            assert "Must enter a valid port number 0 < port < 65535"
-
-        try:
-            socket.inet_aton(ip_addr)
-            # legal
-        except socket.error:
-            # Not legal
-            assert "Must enter a valid ip address x.x.x.x"
-
-        query = gql(UPDATE_IP_PORT_MUTATION)
         params = {
-            "userId": str(self._id),
+            "userId": str(self._user_id),
             "projectId": str(self._id),
-            "port": int(port), 
-            "ip": ip_addr,
+            "port": None,
+            "ip": None
         }
-        updated_port_ip_query = self._client.execute(query, params)
-        print("updated query params")
+
+        if ip_addr is None and port is None:
+            raise "No fields were set."
+
+        # check if the user inputed a valid port  0 .. 2^16
+        if not port is None: 
+            if port > 65535 or port < 0:
+                raise "Must enter a valid port number 0 < port < 65535."
+            params['port'] = int(port)
+     
+        # check if the user inputed a valid ip addres x.x.x.x where x <- 0 .. 2^8-1
+        if not ip_addr is None:
+            try:
+                socket.inet_aton(ip_addr)
+                params['ip'] = ip_addr
+            except socket.error:
+                raise "Must enter a valid ip address x.x.x.x"
+    
+        query = gql(UPDATE_IP_PORT_MUTATION)
+        updated_port_ip_query = self._client.execute(query, params)['updateProjectIp']['project']['onPremField']
+        print(updated_port_ip_query)
         return None
 
     def experiments(self):
