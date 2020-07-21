@@ -1,6 +1,9 @@
 """
-fragments related to to queries received
+query fragments
 """
+
+
+##### QUERIES ##### 
 
 EXPERIMENTS_QUERY_FRAGMENT = """
     query experimentsQuery($id: String!) {
@@ -43,7 +46,8 @@ PROJECTS_QUERY_FRAGMENT = """
             pk, 
             sk,
             name,
-            type
+            type,
+            onPremField
         }
     }
 """
@@ -55,7 +59,9 @@ PROJECT_QUERY_FRAGMENT = """
             pk, 
             sk,
             name,
-            type
+            type,
+            onPremField
         }
     }
 """
+
