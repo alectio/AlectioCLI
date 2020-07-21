@@ -18,6 +18,19 @@ EXPERIMENTS_QUERY_FRAGMENT = """
     }
 """
 
+EXPERIMENT_QUERY_FRAGMENT = """
+    query experimentQuery($id: String!) {
+        experiment(id: $id) {
+            pk, 
+            sk,
+            name,
+            alType,
+            nLoops,
+            nRecords
+        }
+    }
+"""
+
 MODELS_QUERY_FRAGMENT = """
     query modelsQuery($id: String!) {
         models(id: $id) {
@@ -64,4 +77,3 @@ PROJECT_QUERY_FRAGMENT = """
         }
     }
 """
-

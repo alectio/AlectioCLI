@@ -54,14 +54,14 @@ class AlectioClient:
         self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
         # compnay id = 7774e1ca972811eaad5238c986352c36
 
-    def projects(self, user_id):
+    def projects(self):
         """
         retrieve user projects 
         :params: user_id - a uuid 
         """
         query = gql(PROJECTS_QUERY_FRAGMENT)
         params = {
-            "id": str(user_id),
+            "id": str(self._user_id),
         }
         projects_query = self._client.execute(query, params)['projects']
         user_projects = [Project(self._client, item, self._user_id, extract_id(item['sk'])) for item in projects_query]
@@ -79,6 +79,19 @@ class AlectioClient:
         experiments_query  = self._client.execute(query, params)['experiments']
         project_experiments = [Experiment(self._client, extract_id(item['sk']),  item) for item in experiments_query]
         return project_experiments
+
+    def experiment(self, project_id):
+        """
+        retreive experiments that belong to a project
+        :params: project_id - a uuid
+        """
+        query = gql(EXPERIMENT_QUERY_FRAGMENT)
+        params = {
+            "id": str(project_id),
+        }
+        experiment_query  = self._client.execute(query, params)['experiment'][0]
+        user_experiment = Experiment(self._client, extract_id(experiment_query['pk']),  experiment_query) 
+        return user_experiment
 
     # grab user id + project id
     def project(self, project_id):
@@ -127,7 +140,7 @@ class AlectioClient:
         """
         create user project 
         """
-        return Project("", "", "")
+        return Project("", "", "", "")
 
     # TODO:
     def create_experiment(self):
