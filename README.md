@@ -12,11 +12,7 @@ client = AlectioClient()
 ```python
 project = client.project(project_id)
 for experiment in project.experiments():
-  print(experiments)
-```
-
-```python
-experiment = client.experiment(experiment_id)
+  print(experiment)
 ```
 
 ```python
