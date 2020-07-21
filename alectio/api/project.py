@@ -17,11 +17,12 @@ from alectio.tools.mutations import UPDATE_IP_PORT_MUTATION
 
 
 class Project(BaseAttribute):
-    def __init__(self, client, attr, id):
+    def __init__(self, client, attr, user_id, id):
         self._client = client
         self._attr = attr # project attributes 
         self._prem_info = {}
         self._id = id
+        self._user_id = user_id
         self._experiments = {}
         self.set_project_fields(self._attr)
         super().__init__(self._attr, self._id)
@@ -68,7 +69,6 @@ class Project(BaseAttribute):
             # Not legal
             assert "Must enter a valid ip address x.x.x.x"
 
-
         query = gql(UPDATE_IP_PORT_MUTATION)
         params = {
             "userId": str(self._id),
@@ -76,7 +76,8 @@ class Project(BaseAttribute):
             "port": int(port), 
             "ip": ip_addr,
         }
-        updated_port_query = self._client.execute(query, params)['project']
+        updated_port_ip_query = self._client.execute(query, params)
+        print("updated query params")
         return None
 
     def experiments(self):

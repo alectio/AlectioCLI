@@ -64,7 +64,7 @@ class AlectioClient:
             "id": str(user_id),
         }
         projects_query = self._client.execute(query, params)['projects']
-        user_projects = [Project(self._client, item, extract_id(item['sk'])) for item in projects_query]
+        user_projects = [Project(self._client, item, self._user_id, extract_id(item['sk'])) for item in projects_query]
         return user_projects
         
     def experiments(self, project_id):
@@ -77,7 +77,7 @@ class AlectioClient:
             "id": str(project_id),
         }
         experiments_query  = self._client.execute(query, params)['experiments']
-        project_experiments = [Experiment(self._client, extract_id(item['sk']), item) for item in experiments_query]
+        project_experiments = [Experiment(self._client, extract_id(item['sk']),  item) for item in experiments_query]
         return project_experiments
 
     # grab user id + project id
@@ -93,7 +93,7 @@ class AlectioClient:
             "projectId": str(project_id)
         }
         project_query = self._client.execute(query, params)['project'][0]
-        user_project = Project(self._client, project_query, project_id)
+        user_project = Project(self._client, project_query, self._user_id, project_id)
         return user_project
 
     def models(self, organization_id):
