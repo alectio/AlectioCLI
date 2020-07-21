@@ -10,7 +10,6 @@ client = AlectioClient()
 ```
 
 ```python
-from alectio.client import AlectioClient
 project = client.project(project_id)
 for experiment in project.experiments():
   print(experiments)
