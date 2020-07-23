@@ -25,9 +25,12 @@ class Experiment(BaseAttribute):
         """
         return 
 
-
-    def start(self):
-        # send request to alectio 
+    def start(self, strategies):
+        """
+        start an experiment from the sdk
+        :params: strategies - yaml file containing the strategies the user intends to use 
+        for the experimennt.
+        """
         return 
 
     def __repr__(self):

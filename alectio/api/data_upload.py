@@ -35,7 +35,7 @@ class NumericalDataUpload(BaseDataUpload):
         super().labeling_partner_exists(partner)
         # upload numerical data.
         variables = {
-            'file': numerical_file
+            'file': open(numerical_file, 'r')
         }
         response = await self._client.execute(UPLOAD_PARTNER_NUMERICAL_MUTATION, variables=variables)
         print(await response.json())  
@@ -70,7 +70,7 @@ class TextDataUpload(BaseDataUpload):
         super().labeling_partner_exists(partner)
         # upload text data. 
         variables = {
-            'file': text_file
+            'file': open(text_file, 'r')
         }
         response = await self._client.execute(UPLOAD_PARTNER_TEXT_MUTATION, variables=variables)
         print(await response.json())            

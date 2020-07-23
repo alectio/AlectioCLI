@@ -156,27 +156,24 @@ class AlectioClient:
 
         if data_type == "text":
             base_class = TextDataUpload(self._upload_client)
-            return 
         elif data_type == "image":
             base_class = ImageDataUpload(self._upload_client)
-
         elif data_type == "numerical":
             base_class = NumericalDataUpload(self._upload_client)
-
         # upload all the data asynchronously 
         asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
 
         return None 
 
     # TODO:
-    def create_project(self):
+    def create_project(self, file):
         """
         create user project 
         """
         return Project("", "", "", "")
 
     # TODO:
-    def create_experiment(self):
+    def create_experiment(self, file):
         """
         create user experient
         """
