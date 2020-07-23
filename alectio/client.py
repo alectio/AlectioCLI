@@ -4,6 +4,8 @@ import json
 import asyncio
 
 from gql import Client, gql
+from aiogqlc import GraphQLClient
+
 from gql.client import RetryError
 from gql.transport.requests import RequestsHTTPTransport
 
@@ -51,6 +53,10 @@ class AlectioClient:
             ),
             fetch_schema_from_transport=True,
         )
+
+        # client to upload files, images, etc. 
+        # uses https://pypi.org/project/aiogqlc/
+        self._upload_client = GraphQLClient('http://localhost:5005/graphql')
 
         # need to retrive user_id based on token @ DEVI from OPENID 
         self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
@@ -149,13 +155,13 @@ class AlectioClient:
         base_class = None 
 
         if data_type == "text":
-            base_class = TextDataUpload(self._client)
+            base_class = TextDataUpload(self._upload_client)
             return 
         elif data_type == "image":
-            base_class = ImageDataUpload(self._client)
+            base_class = ImageDataUpload(self._upload_client)
 
         elif data_type == "numerical":
-            base_class = NumericalDataUpload(self._client)
+            base_class = NumericalDataUpload(self._upload_client)
 
         asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
 
