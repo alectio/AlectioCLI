@@ -2,7 +2,7 @@
 classes related to data upload.
 uploading is used to keep 
 """
-from alectio.tools.mutations import UPLOAD_PARTNER_IMAGE_MUTATION
+from alectio.tools.mutations import UPLOAD_PARTNER_IMAGE_MUTATION, UPLOAD_PARTNER_NUMERICAL_MUTATION, UPLOAD_PARTNER_TEXT_MUTATION
 from gql import gql
 import asyncio
 from aiogqlc import GraphQLClient
@@ -29,9 +29,15 @@ class NumericalDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    def upload_partner(self, numerical_file, partner, problem, meta={}):
+    async def upload_partner(self, numerical_file, partner, problem, meta={}):
         # super().labeling_partner_exists(partner)
         # upload numerical data.
+        client = GraphQLClient('http://localhost:5005/graphql')
+        variables = {
+            'file': numerical_file
+        }
+        response = await client.execute(UPLOAD_PARTNER_NUMERICAL_MUTATION, variables=variables)
+        print(await response.json())  
         return 
 
 
@@ -61,14 +67,16 @@ class TextDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    def upload_partner(self, text_file, partner, problem, meta={}):
+    async def upload_partner(self, text_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload text data. 
 
-        # variables: {
-        #     file: None # path to the image
-        # }
-        
+        client = GraphQLClient('http://localhost:5005/graphql')
+        variables = {
+            'file': text_file
+        }
+        response = await client.execute(UPLOAD_PARTNER_TEXT_MUTATION, variables=variables)
+        print(await response.json())            
         return None 
 
 
