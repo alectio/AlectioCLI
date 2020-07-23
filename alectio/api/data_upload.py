@@ -26,6 +26,7 @@ class NumericalDataUpload(BaseDataUpload):
 
     def upload_partner(self, numerical_file, partner, problem):
         super().labeling_partner_exists(partner)
+        # upload numerical data.
         return 
 
 
@@ -38,6 +39,11 @@ class ImageDataUpload(BaseDataUpload):
 
     def upload_partner(self, image_path_list, partner, problem):
         super().labeling_partner_exists(partner)
+        # upload all the images asynchronously ... 
+        # for each image upload to backend 
+        for image in image_path_list:
+            
+
         return 
 
 class TextDataUpload(BaseDataUpload):
@@ -49,6 +55,12 @@ class TextDataUpload(BaseDataUpload):
 
     def upload_partner(self, text_file, partner, problem):
         super().labeling_partner_exists(partner)
+        # upload text data. 
         
         return 
 
+
+# curl http://localhost:5005/graphql \
+#   -F operations='{"query": "mutation ($file: Upload!) { uploadMutation(file: $file) { ok }}", "variables": { "file": null }}' \
+#   -F map='{ "0": ["variables.file"]}' \
+#   -F 0=@/Users/ayepez/Desktop/docker.png
