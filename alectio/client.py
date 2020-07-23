@@ -6,6 +6,7 @@ from gql import Client, gql
 from gql.client import RetryError
 from gql.transport.requests import RequestsHTTPTransport
 
+from alectio.api.data_upload import TextDataUpload, ImageDataUpload, NumericalDataUpload
 from alectio.api.project import Project
 from alectio.api.experiment import Experiment 
 from alectio.api.model import Model 
@@ -134,6 +135,29 @@ class AlectioClient:
         model_query = self._client.execute(query, params)['model'][0]
         user_model = Model(self._client, model_id, model_query)
         return user_model
+
+    def upload_data_to_partner(self, data, data_type, problem, partner):
+        """
+        uploads the data to be labeled for a labeling partner.
+        :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
+        :params: data_type - text, numerical, or image
+        :params: problem - object detection, image classsification, etc 
+        :params: partner - name of the labeling partner alectio intends to send the traffic to.
+        """
+        base_class = None 
+
+        if data_type == "text":
+            base_class = TextDataUpload(self._client)
+            return 
+        elif data_type == "image":
+            base_class = ImageDataUpload(self._client)
+
+        elif data_type == "nummerical":
+            base_class = NumericalDataUpload(self._client)
+
+        base_class.upload_partner(data, partner, problem)
+
+        return None 
 
     # TODO:
     def create_project(self):

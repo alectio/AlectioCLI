@@ -24,7 +24,7 @@ class NumericalDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, numerical_file, partner):
+    def upload_partner(self, numerical_file, partner, problem):
         super().labeling_partner_exists(partner)
         return 
 
@@ -36,7 +36,7 @@ class ImageDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, image_path_list, partner):
+    def upload_partner(self, image_path_list, partner, problem):
         super().labeling_partner_exists(partner)
         return 
 
@@ -47,13 +47,8 @@ class TextDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, text_file, partner):
+    def upload_partner(self, text_file, partner, problem):
         super().labeling_partner_exists(partner)
         
         return 
 
-
-"""
-daivergant takes any format as long as the specified key is sent as the list of jobs
-seekncheck only takes json format - to be consistsent
-"""
