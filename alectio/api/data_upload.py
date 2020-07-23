@@ -45,20 +45,12 @@ class ImageDataUpload(BaseDataUpload):
     async def upload_partner(self, image_path_list, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload all the images asynchronously ... 
-        # TODO: make this a single request 
         client = GraphQLClient('http://localhost:5005/graphql')
-        for image_path in image_path_list:
-            variables = {
-                'file': open(image_path, 'rb')
-            }
-            response = await client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
-            print(await response.json())
-
-            # params = {'file': open(image_path, 'rb')}
-            # query = gql(UPLOAD_PARTNER_IMAGE_MUTATION)
-            # self.client.execute(query, params)
-            
-            
+        variables = {
+            'files': [open(i, 'rb') for i in image_path_list]
+        }
+        response = await client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
+        print(await response.json())            
         return None
 
 class TextDataUpload(BaseDataUpload):

@@ -15,32 +15,24 @@ UPDATE_IP_PORT_MUTATION = """mutation updateProjectIp($userId: String!, $project
 
 ##### FILE UPLOAD MUTATIONS #####
 
-# UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($file: Upload!) {
-#     uploadPartnerImageMutation(file: $file) {
-#        ok
-#     }
-# }"""
-
-UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($file: Upload!) {
-    uploadPartnerImageMutation(file: $file) {
+UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!) {
+    uploadPartnerImageMutation(files: $files) {
         ok
     }
 }"""
 
 
-# UPLOAD_PARTNER_TEXT_MUTATION = '''
-#         mutation uploadPartnerTextMutation($file: Upload!) {
-#             uploadPartnerTextMutation(file: $file) {
-#                 ok
-#             }
-#         }
-# '''
+UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($files: Upload!) {
+    uploadPartnerTextMutation(files: $files) {
+        ok
+    }
+}"""
 
 
-# UPLOAD_PARTNER_NUMERICAL_MUTATION = '''
-#         mutation uploadPartnerNumericalMutation($file: Upload!) {
-#             uploadPartnerNumericalMutation(file: $file) {
-#                 ok
-#             }
-#         }
-# '''
+UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($files: Upload!) {
+    uploadPartnerNumericalMutation(files: $files) {
+        ok
+    }
+}"""
+
+##### FILE DOWNLOAD MUTATIONS #####
