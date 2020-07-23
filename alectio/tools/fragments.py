@@ -1,10 +1,26 @@
 """
-fragments related to to queries received
+query fragments
 """
+
+
+##### QUERIES ##### 
 
 EXPERIMENTS_QUERY_FRAGMENT = """
     query experimentsQuery($id: String!) {
         experiments(id: $id) {
+            pk, 
+            sk,
+            name,
+            alType,
+            nLoops,
+            nRecords
+        }
+    }
+"""
+
+EXPERIMENT_QUERY_FRAGMENT = """
+    query experimentQuery($id: String!) {
+        experiment(id: $id) {
             pk, 
             sk,
             name,
@@ -26,7 +42,7 @@ MODELS_QUERY_FRAGMENT = """
     }
 """
 
-MODEL_QUERY_FRAGEMENT = """
+MODEL_QUERY_FRAGMENT = """
     query modelQuery($id: String!) {
         model(id: $id) {
             pk, 
@@ -43,19 +59,21 @@ PROJECTS_QUERY_FRAGMENT = """
             pk, 
             sk,
             name,
-            type
+            type,
+            onPremField
         }
     }
 """
 
 
 PROJECT_QUERY_FRAGMENT = """
-    query projectQuery($id: String!) {
-        project(id: $id) {
+    query projectQuery($userId: String!, $projectId: String!) {
+        project(userId: $userId, projectId: $projectId) {
             pk, 
             sk,
             name,
-            type
+            type,
+            onPremField
         }
     }
 """
