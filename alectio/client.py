@@ -163,6 +163,7 @@ class AlectioClient:
         elif data_type == "numerical":
             base_class = NumericalDataUpload(self._upload_client)
 
+        # upload all the data asynchronously 
         asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
 
         return None 

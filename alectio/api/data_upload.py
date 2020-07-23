@@ -9,15 +9,15 @@ import asyncio
 
 class BaseDataUpload():
     def __init__(self, client):
-        self.client = client 
-        self.labeling_partners = ["daivergant", "seekncheck"]
+        self._client = client 
+        self._labeling_partners = ["daivergant", "seekncheck"]
 
     def labeling_partner_exists(self, partner):
         """
         check if the labeling partner exists.
         :params: partner
         """
-        if not partner in self.labeling_partners:
+        if not partner in self._labeling_partners:
             raise "labeling partner not found"
 
 
@@ -34,14 +34,12 @@ class NumericalDataUpload(BaseDataUpload):
     async def upload_partner(self, numerical_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload numerical data.
-        # client = GraphQLClient('http://localhost:5005/graphql')
         variables = {
             'file': numerical_file
         }
         response = await self._client.execute(UPLOAD_PARTNER_NUMERICAL_MUTATION, variables=variables)
         print(await response.json())  
         return 
-
 
 class ImageDataUpload(BaseDataUpload):
     """
@@ -53,7 +51,6 @@ class ImageDataUpload(BaseDataUpload):
     async def upload_partner(self, image_path_list, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload all the images asynchronously ... 
-        # client = GraphQLClient('http://localhost:5005/graphql')
         variables = {
             'files': [open(i, 'rb') for i in image_path_list]
         }
@@ -72,8 +69,6 @@ class TextDataUpload(BaseDataUpload):
     async def upload_partner(self, text_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload text data. 
-
-        # client = GraphQLClient('http://localhost:5005/graphql')
         variables = {
             'file': text_file
         }
