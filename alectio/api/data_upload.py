@@ -2,6 +2,7 @@
 classes related to data upload.
 uploading is used to keep 
 """
+from alectio.tools.mutations import UPLOAD_PARTNER_IMAGE_MUTATION
 
 
 class BaseDataUpload():
@@ -24,7 +25,7 @@ class NumericalDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, numerical_file, partner, problem):
+    def upload_partner(self, numerical_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload numerical data.
         return 
@@ -37,14 +38,18 @@ class ImageDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, image_path_list, partner, problem):
+    def upload_partner(self, image_path_list, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload all the images asynchronously ... 
-        # for each image upload to backend 
-        for image in image_path_list:
-            
+        # TODO: make this a single request 
+        for image_path in image_path_list:
+            variables: {
+                "file": image_path
+            }
+            self.client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
+            pass
 
-        return 
+        return None
 
 class TextDataUpload(BaseDataUpload):
     """
@@ -53,11 +58,15 @@ class TextDataUpload(BaseDataUpload):
     def __init__(self, client):
         self.client = client 
 
-    def upload_partner(self, text_file, partner, problem):
+    def upload_partner(self, text_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload text data. 
+
+        # variables: {
+        #     file: None # path to the image
+        # }
         
-        return 
+        return None 
 
 
 # curl http://localhost:5005/graphql \

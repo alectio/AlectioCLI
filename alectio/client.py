@@ -136,13 +136,14 @@ class AlectioClient:
         user_model = Model(self._client, model_id, model_query)
         return user_model
 
-    def upload_data_to_partner(self, data, data_type, problem, partner):
+    def upload_data_to_partner(self, data, data_type, problem, partner, meta):
         """
-        uploads the data to be labeled for a labeling partner.
+        uploads the data to be labeled for a labeling partner. primarily used in sdk to automate the job process.
         :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
         :params: data_type - text, numerical, or image
         :params: problem - object detection, image classsification, etc 
         :params: partner - name of the labeling partner alectio intends to send the traffic to.
+        :params: meta - dictionary with meta information regarding data to be upload. i.e job_id, project_id, company_id, etc.
         """
         base_class = None 
 
@@ -155,7 +156,7 @@ class AlectioClient:
         elif data_type == "nummerical":
             base_class = NumericalDataUpload(self._client)
 
-        base_class.upload_partner(data, partner, problem)
+        base_class.upload_partner(data, partner, problem, meta)
 
         return None 
 
