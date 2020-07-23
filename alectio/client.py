@@ -1,6 +1,7 @@
 import requests
 import os 
 import json
+import asyncio
 
 from gql import Client, gql
 from gql.client import RetryError
@@ -153,10 +154,10 @@ class AlectioClient:
         elif data_type == "image":
             base_class = ImageDataUpload(self._client)
 
-        elif data_type == "nummerical":
+        elif data_type == "numerical":
             base_class = NumericalDataUpload(self._client)
 
-        base_class.upload_partner(data, partner, problem, meta)
+        asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
 
         return None 
 

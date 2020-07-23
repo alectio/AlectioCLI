@@ -3,6 +3,9 @@ classes related to data upload.
 uploading is used to keep 
 """
 from alectio.tools.mutations import UPLOAD_PARTNER_IMAGE_MUTATION
+from gql import gql
+import asyncio
+from aiogqlc import GraphQLClient
 
 
 class BaseDataUpload():
@@ -23,10 +26,11 @@ class NumericalDataUpload(BaseDataUpload):
     upload numerical data
     """
     def __init__(self, client):
-        self.client = client 
+        super().__init__(client)
+
 
     def upload_partner(self, numerical_file, partner, problem, meta={}):
-        super().labeling_partner_exists(partner)
+        # super().labeling_partner_exists(partner)
         # upload numerical data.
         return 
 
@@ -36,19 +40,25 @@ class ImageDataUpload(BaseDataUpload):
     upload image data 
     """
     def __init__(self, client):
-        self.client = client 
+        super().__init__(client)
 
-    def upload_partner(self, image_path_list, partner, problem, meta={}):
+    async def upload_partner(self, image_path_list, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
         # upload all the images asynchronously ... 
         # TODO: make this a single request 
+        client = GraphQLClient('http://localhost:5005/graphql')
         for image_path in image_path_list:
-            variables: {
-                "file": image_path
+            variables = {
+                'file': open(image_path, 'rb')
             }
-            self.client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
-            pass
+            response = await client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
+            print(await response.json())
 
+            # params = {'file': open(image_path, 'rb')}
+            # query = gql(UPLOAD_PARTNER_IMAGE_MUTATION)
+            # self.client.execute(query, params)
+            
+            
         return None
 
 class TextDataUpload(BaseDataUpload):
@@ -56,7 +66,8 @@ class TextDataUpload(BaseDataUpload):
     upload text data 
     """
     def __init__(self, client):
-        self.client = client 
+        super().__init__(client)
+
 
     def upload_partner(self, text_file, partner, problem, meta={}):
         super().labeling_partner_exists(partner)
