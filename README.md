@@ -33,11 +33,11 @@ for project in projects:
 
 ## Experiments
 ```python
-experiments = client.experiemnts("project_id") # grab all the experiments that belong to a project
+experiments = client.experiments("project_id") # grab all the experiments that belong to a project
 ```
 
 ```python
-experiment = client.experiemnts("experiment_id") # grab a single experiment
+experiment = client.experiment("experiment_id") # grab a single experiment
 ```
 
 
