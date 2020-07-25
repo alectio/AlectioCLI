@@ -5,7 +5,7 @@ from alectio.tools.utils import extract_id
 
 class Experiment(BaseAttribute):
 
-    def __init__(self, client, id, user_id, attr={}):
+    def __init__(self, client, attr, user_id, id):
         self.client = client
         self._attr = attr # experiment attributes
         self._user_id = user_id

@@ -2,6 +2,7 @@ import requests
 import os 
 import json
 import asyncio
+import sys
 
 from gql import Client, gql
 from aiogqlc import GraphQLClient
@@ -41,9 +42,6 @@ class AlectioClient:
 
         self._endpoint = f'{self._settings["base_url"]}/graphql'
 
-        # user projects + experiments.
-        # self._user_experiments = {}
-
         # graphql client
         self._client = Client(
             transport=RequestsHTTPTransport(
@@ -62,44 +60,67 @@ class AlectioClient:
         self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
         # compnay id = 7774e1ca972811eaad5238c986352c36
 
+    def get_single(self, resource, query_string, params):
+        """
+        return a single object for the requested resource.
+        :params: resource - name of the resource to obtain i.e experiments, projects, models, etc.
+        :params: query_string - graphql string to invoke.
+        :params: params - variables required to invoke query string in the client.
+        """
+        query = gql(query_string)
+        class_name = lambda class_name: getattr(sys.modules[__name__], class_name)
+        singular = self._client.execute(query, params)[resource][0]
+        class_to_init = class_name(resource.title())
+        hash_key =  extract_id(singular['pk'])
+        if resource == "project":
+           hash_key = extract_id(singular['sk'])
+        singular_object = class_to_init(self._client, singular, self._user_id, hash_key)
+        return singular_object
+
+    def get_collection(self, resource, query_string, params):
+        """
+        return a collection of objects for the requested resource.
+        :params: resource - name of the resource to obtain i.e experiments, projects, models, etc.
+        :params: query_string - graphql string to invoke.
+        :params: params - variables required to invoke query string in the client.
+        """
+        query = gql(query_string)
+        singular_resource =  lambda resource_name: str(resource_name.title()[0:-1]) # format resource name to match one of the existing classes
+        class_name = lambda class_name: getattr(sys.modules[__name__], class_name) # convert string to class name 
+        collection = self._client.execute(query, params)[resource]
+        class_to_init = class_name(singular_resource(resource))
+        collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
+        return collection_objects
+
     def projects(self):
         """
         retrieve user projects 
         :params: user_id - a uuid 
         """
-        query = gql(PROJECTS_QUERY_FRAGMENT)
         params = {
             "id": str(self._user_id),
         }
-        projects_query = self._client.execute(query, params)['projects']
-        user_projects = [Project(self._client, item, self._user_id, extract_id(item['sk'])) for item in projects_query]
-        return user_projects
+        return self.get_collection("projects", PROJECTS_QUERY_FRAGMENT, params)
         
     def experiments(self, project_id):
         """
         retreive experiments that belong to a project
         :params: project_id - a uuid
         """
-        query = gql(EXPERIMENTS_QUERY_FRAGMENT)
         params = {
             "id": str(project_id),
         }
-        experiments_query  = self._client.execute(query, params)['experiments']
-        project_experiments = [Experiment(self._client, extract_id(item['sk']), self._user_id, item) for item in experiments_query]
-        return project_experiments
+        return self.get_collection("experiments", EXPERIMENTS_QUERY_FRAGMENT, params)
 
     def experiment(self, experiment_id):
         """
         retreive experiments that belong to a project
         :params: project_id - a uuid
         """
-        query = gql(EXPERIMENT_QUERY_FRAGMENT)
         params = {
             "id": str(experiment_id),
         }
-        experiment_query  = self._client.execute(query, params)['experiment'][0]
-        user_experiment = Experiment(self._client, extract_id(experiment_query['pk']), self._user_id, experiment_query) 
-        return user_experiment
+        return self.get_single("experiment", EXPERIMENT_QUERY_FRAGMENT, params)
 
     # grab user id + project id
     def project(self, project_id):
@@ -107,41 +128,33 @@ class AlectioClient:
         retrieve a single user project
         :params: project_id - a uuid
         """
-        # also need to pass the user id 
-        query = gql(PROJECT_QUERY_FRAGMENT)
         params = {
-            "userId": str(self._user_id),
-            "projectId": str(project_id)
+             "userId": str(self._user_id),
+             "projectId": str(project_id)
         }
-        project_query = self._client.execute(query, params)['project'][0]
-        user_project = Project(self._client, project_query, self._user_id, project_id)
-        return user_project
+        return self.get_single("project", PROJECT_QUERY_FRAGMENT, params)
 
     def models(self, organization_id):
         """
+        TODO:
         retrieve models associated with a user / organization.
         :params: project_id - a uuid
         """
-        query = gql(MODELS_QUERY_FRAGMENT)
         params = {
             "id": str(organization_id),
         }
-        models_query  = self._client.execute(query, params)['models']
-        company_models = [Model(self._client, extract_id(item['sk']), item)  for item in models_query]
-        return company_models
+        return self.get_collection("models", MODELS_QUERY_FRAGMENT, params)
 
     def model(self, model_id):
         """
+        TODO:
         retrieve a single user model
         :params: project_id - a uuid
         """
-        query = gql(MODEL_QUERY_FRAGMENT)
         params = {
             "id": str(model_id),
         }
-        model_query = self._client.execute(query, params)['model'][0]
-        user_model = Model(self._client, model_id, model_query)
-        return user_model
+        return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
     def upload_data_to_partner(self, data, data_type, problem, partner, meta):
         """
@@ -177,7 +190,7 @@ class AlectioClient:
         """
         create user experient
         """
-        return Experiment("", "", "")
+        return Experiment("", "", "", "")
 
     # TODO:
     def create_model(self, model_path):
@@ -185,7 +198,7 @@ class AlectioClient:
         upload model checksum and verify there are enough models to check 
         :returns: model object 
         """
-        return Model("", "", "")
+        return Model("", "", "", "")
 
 
 

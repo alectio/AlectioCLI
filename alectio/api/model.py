@@ -15,7 +15,7 @@ import sys
 
 
 class Model(BaseAttribute):
-    def __init__(self, client, id="", attr={}):
+    def __init__(self, client, attr={}, user_id=None, id=None):
         self.client = client
         self._attr = attr
         self._id = id

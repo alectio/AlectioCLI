@@ -92,12 +92,13 @@ class Project(BaseAttribute):
         retreive experiments that belong to a project
         :params: project_id - a uuid
         """
+        # TODO: client connection in here ? 
         query = gql(EXPERIMENTS_QUERY_FRAGMENT)
         params = {
             "id": str(self._id),
         }
         experiments_query  = self._client.execute(query, params)['experiments']
-        project_experiments = [Experiment(self._client, extract_id(item['sk']), item) for item in experiments_query]
+        project_experiments = [Experiment(self._client, item, self._user_id, extract_id(item['sk'])) for item in experiments_query]
         return project_experiments
 
 
@@ -111,3 +112,7 @@ class Project(BaseAttribute):
 
     def __repr__(self):
         return "<Project {}>".format(self._id)
+
+
+    # def __str__(self):
+    #     return "<Project {}>".format(self._id)
