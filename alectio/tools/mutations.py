@@ -22,15 +22,15 @@ UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: U
 }"""
 
 
-UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($files: Upload!) {
-    uploadPartnerTextMutation(files: $files) {
+UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($file: Upload!) {
+    uploadPartnerTextMutation(file: $file) {
         ok
     }
 }"""
 
 
-UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($files: Upload!) {
-    uploadPartnerNumericalMutation(files: $files) {
+UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($file: Upload!) {
+    uploadPartnerNumericalMutation(file: $file) {
         ok
     }
 }"""

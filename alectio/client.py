@@ -85,20 +85,20 @@ class AlectioClient:
             "id": str(project_id),
         }
         experiments_query  = self._client.execute(query, params)['experiments']
-        project_experiments = [Experiment(self._client, extract_id(item['sk']),  item) for item in experiments_query]
+        project_experiments = [Experiment(self._client, extract_id(item['sk']), self._user_id, item) for item in experiments_query]
         return project_experiments
 
-    def experiment(self, project_id):
+    def experiment(self, experiment_id):
         """
         retreive experiments that belong to a project
         :params: project_id - a uuid
         """
         query = gql(EXPERIMENT_QUERY_FRAGMENT)
         params = {
-            "id": str(project_id),
+            "id": str(experiment_id),
         }
         experiment_query  = self._client.execute(query, params)['experiment'][0]
-        user_experiment = Experiment(self._client, extract_id(experiment_query['pk']),  experiment_query) 
+        user_experiment = Experiment(self._client, extract_id(experiment_query['pk']), self._user_id, experiment_query) 
         return user_experiment
 
     # grab user id + project id
@@ -156,27 +156,24 @@ class AlectioClient:
 
         if data_type == "text":
             base_class = TextDataUpload(self._upload_client)
-            return 
         elif data_type == "image":
             base_class = ImageDataUpload(self._upload_client)
-
         elif data_type == "numerical":
             base_class = NumericalDataUpload(self._upload_client)
-
         # upload all the data asynchronously 
         asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
 
         return None 
 
     # TODO:
-    def create_project(self):
+    def create_project(self, file):
         """
         create user project 
         """
         return Project("", "", "", "")
 
     # TODO:
-    def create_experiment(self):
+    def create_experiment(self, file):
         """
         create user experient
         """
