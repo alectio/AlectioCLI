@@ -2,14 +2,14 @@
 
 The Aletio client library provides an alternative to our platform website. A user is able to view experiments, projects, and other resources associated with an Alectio account. In addition, a user is able to create resources (projects + expermients), and is able to run an experiment from the command line to trigger and sdk experiment on premise.
 
+For context, a project is a model plus data set pair, and every project can have many active learning experiments. 
+
 
 # Install Client Library 
 
 ```python
 pip3 install alectio
 ```
-
-
 
 
 ## Initialize the client
