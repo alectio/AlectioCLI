@@ -25,5 +25,5 @@ class BaseAttribute:
             
         return self._objects
 
-    #TODO: convert camel case to snakecase, and use these attributes as the parent class
+    #TODO: convert camel case to snakecase, and use these attributes as the parent class + gettr methods
 
