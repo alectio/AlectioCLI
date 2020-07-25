@@ -1,6 +1,6 @@
 # AlectioCLI
 
-The Aletio client library provides an alternative to our platform website A user is able to view experiments, projects, and other resources associated with an Alectio account. In addition, a user is able to create resources (porojets + expermients), and is able to run an experiment from the command line.
+The Aletio client library provides an alternative to our platform website. A user is able to view experiments, projects, and other resources associated with an Alectio account. In addition, a user is able to create resources (projects + expermients), and is able to run an experiment from the command line to trigger and sdk experiment on premise.
 
 
 # Install Client Library 
