@@ -19,7 +19,10 @@ class ParseYaml:
         return data 
 
 
-    def general_sanity_chekcks():
+    def general_sanity_chekcks(self):
+        """
+        
+        """
         return 
 
 
