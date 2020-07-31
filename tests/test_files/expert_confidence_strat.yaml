@@ -1,0 +1,6 @@
+resource: Strategy
+mode: expert
+query_strategy:
+  - confidence:
+      - over: 0.5
+      - under: 0.6

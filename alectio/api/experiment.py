@@ -1,8 +1,9 @@
-
+import os
 from gql import gql
 
 from alectio.api.base_attribute import BaseAttribute
 from alectio.tools.utils import extract_id
+from alectio.tools.parser import ParseStrategyYaml
 from alectio.tools.mutations import START_EXPERIMENT_MUTATION
 
 
@@ -48,7 +49,7 @@ class Experiment(BaseAttribute):
         # just pass in user_id + project_id + experiment_id
         return 
 
-    def upload_query_strategy(self, strategy=None):
+    def upload_query_strategy(self, strategy_path):
         """
         upload a qs before an experiment is run.
         if the user has created an experiment for manual al, then 
@@ -59,6 +60,10 @@ class Experiment(BaseAttribute):
         a qs.
         :params: a yaml file containing a strategy to use for the experiment.
         """
+        if strategy_path is None or not os.path.exists(strategy_path):
+        # need to upload, the qs list + mode 
+            raise "Path to strategies not found"
+
         return 
 
     def set_project_id(self):

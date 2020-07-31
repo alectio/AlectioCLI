@@ -1,0 +1,4 @@
+resource: Strategy
+mode: simple
+query_strategy:
+  - random 

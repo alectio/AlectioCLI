@@ -1,0 +1,5 @@
+Resource: Strategy
+mode: simple
+query_strategy:
+  - confidence:
+      - lowest
