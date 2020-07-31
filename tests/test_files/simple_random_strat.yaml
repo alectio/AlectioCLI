@@ -1,4 +1,5 @@
 resource: Strategy
 mode: simple
 query_strategy:
-  - random 
+  random: 
+    type: None 

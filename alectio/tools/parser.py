@@ -5,7 +5,10 @@ import yaml
 
 
 class ParseYaml:
-    
+    """
+    Base Yaml class 
+    """
+
     def __init__(self, path):        
         self._valid_resources = ["Project", "Experiment", "Strategy"]
         self._object = self.parse_yaml(path)
@@ -45,6 +48,9 @@ class ParseStrategyYaml(ParseYaml):
         self._valid_modes = ["simple", "expert"]
         self._qs_list = []
         self._experiment_mode = None
+        self._object = super().parse_yaml(path)
+        print(self._object)
+        self.sanity_checks()
         super().__init__(path)
 
 
@@ -54,10 +60,14 @@ class ParseStrategyYaml(ParseYaml):
         """
 
         # check if the list of query strategies are valid 
+        # [{'confidence': ['lowest']}] simple for non random
+
+        # edge case for random
+        # if query_strategy[0]
         qs_names = list(query_strategy.keys())
         for qs in qs_names:
             if not qs in self._valid_query_strategies:
-                raise f"Invalid query strategy {qs}"
+                return f"Invalid query strategy {qs}"
 
         # check against the mode, each mode will have a variable amount of query strats
         if experiment_mode == "simple":
@@ -78,18 +88,18 @@ class ParseStrategyYaml(ParseYaml):
         perform specific file checks
         """
         # perform general sanity checks 
-        super().general_sanity_checks()
+        # super().general_sanity_checks()
         yaml_object = self._object
 
         # check for outer keys
         for key in list(yaml_object.keys()):
             if key not in self._required_fields:
-                raise f"Invalid key: {key}" 
+                return f"Invalid key: {key}" 
 
         # perform checks on the mode: either simple or expert 
         experiment_mode = self._object['mode']
         if not experiment_mode in self._valid_modes:
-            raise f"Invalid mode: {experiment_mode}"
+            return f"Invalid mode: {experiment_mode}"
         
         self._mode = experiment_mode
         qs_list = self._object['query_strategy']

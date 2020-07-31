@@ -2,6 +2,6 @@ resource: Strategy
 mode: expert
 query_strategy:
   confidence:
+    n_rec: 100
     over: 0.5
     under: 0.6
-    n_rec: 100
