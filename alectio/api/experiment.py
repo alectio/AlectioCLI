@@ -24,7 +24,6 @@ class Experiment(BaseAttribute):
         """
         return 
 
-    # TODO: aureliano.
     def download_experiment_metrics(self):
         """
         download metrics for this experiment
