@@ -27,9 +27,6 @@ class Project(BaseAttribute):
         self.set_project_fields(self._attr)
         super().__init__(self._attr, self._id)
     
-    def created_experiment(self):
-        # TODO: parse yaml
-        return 
 
     def upload_classes(self):
         """
