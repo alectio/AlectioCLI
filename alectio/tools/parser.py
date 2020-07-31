@@ -5,6 +5,7 @@ import yaml
 
 
 class ParseYaml:
+    
     def __init__(self, path):        
         self._valid_resources = ["Project", "Experiment", "Strategy"]
         self._object = self.parse_yaml(path)
@@ -45,7 +46,6 @@ class ParseStrategyYaml(ParseYaml):
         self._qs_list = []
         self._experiment_mode = None
         super().__init__(path)
-
 
 
     def query_strategies_sanity(self, experiment_mode, query_strategy):
@@ -95,6 +95,7 @@ class ParseStrategyYaml(ParseYaml):
         qs_list = self._object['query_strategy']
 
         self.query_strategies_sanity(experiment_mode, qs_list)
+
         return 
 
     def experiment_mode(self):

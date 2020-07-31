@@ -17,6 +17,7 @@ from alectio.tools.mutations import UPDATE_IP_PORT_MUTATION
 
 
 class Project(BaseAttribute):
+    
     def __init__(self, client, attr, user_id, id):
         self._client = client
         self._attr = attr # project attributes 
@@ -27,27 +28,6 @@ class Project(BaseAttribute):
         self.set_project_fields(self._attr)
         super().__init__(self._attr, self._id)
     
-
-    def upload_classes(self):
-        """
-        upload class labels to the user project 
-        """
-        # TODO: upload class labels
-        return 
-
-
-    def upload_data(self):
-        """
-        upload data to labeling company
-        """
-        return
-
-    def pending_labels(self):  
-        """
-        show all pending labels for a project 
-        """
-        return 
-
 
     def update_ip_port(self, ip_addr=None, port=None):
         """
