@@ -40,4 +40,9 @@ experiments = client.experiments("project_id") # grab all the experiments that b
 experiment = client.experiment("experiment_id") # grab a single experiment
 ```
 
+### Running an Experiment
+
+```python
+experiment.start() # run an experiment 
+```
 

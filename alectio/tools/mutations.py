@@ -35,4 +35,10 @@ UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($
     }
 }"""
 
+START_EXPERIMENT_MUTATION = """mutation startExperimentMutation($userId: String!, $projectId: String!, $experimentId: String!) {
+    startExperimentMutation(userId: $userId, projectId: $projectId, experimentId: $experimentId) {
+        ok
+    }
+}"""
+
 ##### FILE DOWNLOAD MUTATIONS #####
