@@ -31,11 +31,9 @@ class Experiment(BaseAttribute):
         """
         return 
 
-    def start(self, strategies=None):
+    def start(self):
         """
         start an experiment from the sdk
-        :params: strategies - yaml file containing the strategies the user intends to use 
-        for the experimennt.
         """
         # parse yaml 
         print("starting an experiment")
@@ -49,6 +47,19 @@ class Experiment(BaseAttribute):
         print(self._client.execute(query, params))
 
         # just pass in user_id + project_id + experiment_id
+        return 
+
+    def upload_query_strategy(self, strategy=None):
+        """
+        upload a qs before an experiment is run.
+        if the user has created an experiment for manual al, then 
+        the user will have to upload a qs at every loop.
+        if the user has created an experiment for regular al, then the
+        user will have to upload a qs at the beginning.
+        if the user is using auto al, then the user does not have to upload
+        a qs.
+        :params: a yaml file containing a strategy to use for the experiment.
+        """
         return 
 
     def set_project_id(self):
