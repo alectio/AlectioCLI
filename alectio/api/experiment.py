@@ -19,18 +19,6 @@ class Experiment(BaseAttribute):
         self.set_project_id()
         
 
-    def metrics(self):
-        """
-        return the metrics for an experiment
-        """
-        return 
-
-    def download_experiment_metrics(self):
-        """
-        download metrics for this experiment
-        """
-        return 
-
     def start(self):
         """
         start an experiment from the sdk
@@ -62,8 +50,20 @@ class Experiment(BaseAttribute):
         """
         if strategy_path is None or not os.path.exists(strategy_path):
         # need to upload, the qs list + mode 
-            raise "Path to strategies not found"
+            raise "Path to query strategies not found"
+        
+        # parse yaml and check for any issues wihtin the file
+        strategies = ParseStrategyYaml(strategy_path)
 
+        experiment_mode = strategies.experiment_mode()
+        query_strategy_list = strategies.query_strategy_list()
+
+        # outputs for strategies from yaml
+        print(experiment_mode)
+        print(query_strategy_list)
+
+
+        # send the information to the backend to process 
         return 
 
     def set_project_id(self):

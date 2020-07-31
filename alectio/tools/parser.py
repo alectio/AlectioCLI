@@ -47,6 +47,32 @@ class ParseStrategyYaml(ParseYaml):
         super().__init__(path)
 
 
+
+    def query_strategies_sanity(self, experiment_mode, query_strategy):
+        """
+        query strategies formated in the yaml
+        """
+
+        # check if the list of query strategies are valid 
+        qs_names = list(query_strategy.keys())
+        for qs in qs_names:
+            if not qs in self._valid_query_strategies:
+                raise f"Invalid query strategy {qs}"
+
+        # check against the mode, each mode will have a variable amount of query strats
+        if experiment_mode == "simple":
+            qs_name = qs_names[0]
+            if qs_name == "random":
+                return
+            else:
+                return         
+        else:   
+            return 
+        # expert mode
+
+        return 
+
+    
     def sanity_checks(self):
         """
         perform specific file checks
@@ -66,27 +92,24 @@ class ParseStrategyYaml(ParseYaml):
             raise f"Invalid mode: {experiment_mode}"
         
         self._mode = experiment_mode
+        qs_list = self._object['query_strategy']
 
-        return 
-
-    def query_strategies_sanity(self, experiment_mode, query_strategy):
-        """
-        query strategies formated in the yaml
-        """
-        if experiment_mode == "simple":
-            return 
-        else:   
-            return 
-        # expert mode
-
+        self.query_strategies_sanity(experiment_mode, qs_list)
         return 
 
     def experiment_mode(self):
         """
-        experiment mode
+        experiment mode used in the yaml,
+        must be the same as when the experiment was created.
         """
         return self._experiment_mode
 
+
+    def query_strategy_list(self):
+        """
+        list of query strategies the user intends to use 
+        """
+        return self._qs_list
 
 
 
