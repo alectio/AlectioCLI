@@ -39,11 +39,10 @@ class ParseStrategyYaml():
             print(query_strategy_object)     
             self.simple_fields_sanity(qs_name, query_strategy_object)
             self._qs_list = query_strategy_object
-            return
         else:   
             return 
         # expert mode
-
+        print("passed simple tests")
         return 
 
 
