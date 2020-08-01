@@ -15,8 +15,10 @@ class ParseStrategyYaml():
         self._valid_query_strategies = ["random", "confidence", "margin", "entropy"]
         self._valid_modes = ["simple", "expert"]
         self._valid_intervals = ["lowest", "highest"]
+        self._valid_experiment_type = ["manual_al", "auto_al"]
         self._qs_list = []
         self._experiment_mode = None
+        self._experiment_type = None
         self._object = self.parse_yaml(path)
         print(self._object)
         self.sanity_checks()
@@ -85,7 +87,6 @@ class ParseStrategyYaml():
         """
         yaml_object = self._object
         print(yaml_object)
-
         # check for outer keys
         for key in list(yaml_object.keys()):
             if key == "resource":
@@ -96,27 +97,13 @@ class ParseStrategyYaml():
         experiment_mode = self._object['mode']
         if not experiment_mode in self._valid_modes:
             return f"Invalid mode: {experiment_mode}"
+
         self._mode = experiment_mode
         qs_list = self._object['query_strategy']
         self.query_strategies_sanity(experiment_mode, qs_list)
-
         return 
 
-    def experiment_mode(self):
-        """
-        experiment mode used in the yaml,
-        must be the same as when the experiment was created.
-        """
-        return self._experiment_mode
 
-
-    def query_strategy_list(self):
-        """
-        list of query strategies the user intends to use 
-        """
-        return self._qs_list
-
-    
     def parse_yaml(self, path):
         """
         parse yaml file the
@@ -127,5 +114,26 @@ class ParseStrategyYaml():
         return data 
 
 
+    @property
+    def experiment_mode(self):
+        """
+        experiment mode used in the yaml,
+        must be the same as when the experiment was created.
+        """
+        return self._experiment_mode
+
+    @property
+    def qs_list(self):
+        """
+        list of query strategies the user intends to use 
+        """
+        return self._qs_list
+
+    @property
+    def experiment_type(self):
+        """
+        the experiment type for the yaml
+        """
+        return self._experiment_type
 
      

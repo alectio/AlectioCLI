@@ -19,6 +19,8 @@ class Experiment(BaseAttribute):
         self.set_project_id()
         
 
+    # TODO: start_auto ? if its auto al then you do not need to upload anything.
+
     def start(self):
         """
         start an experiment from the sdk
@@ -55,12 +57,13 @@ class Experiment(BaseAttribute):
         # parse yaml and check for any issues wihtin the file
         strategies = ParseStrategyYaml(strategy_path)
 
-        experiment_mode = strategies.experiment_mode()
-        query_strategy_list = strategies.query_strategy_list()
-
+        experiment_mode = strategies.experiment_mode
+        query_strategy_list = strategies.qs_list
+        experiment_type = strategies.experiment_type
         # outputs for strategies from yaml
         print(experiment_mode)
         print(query_strategy_list)
+        print(experiment_type)
 
 
         # send the information to the backend to process 
