@@ -15,7 +15,7 @@ class ParseStrategyYaml():
         self._valid_query_strategies = ["random", "confidence", "margin", "entropy"]
         self._valid_modes = ["simple", "expert"]
         self._valid_intervals = ["lowest", "highest"]
-        self._valid_experiment_type = ["manual_al", "auto_al"]
+        self._valid_experiment_type = ["manual_al", "regular_al"]
         self._qs_list = []
         self._experiment_mode = None
         self._experiment_type = None
@@ -93,13 +93,22 @@ class ParseStrategyYaml():
                 continue
             elif key not in self._required_fields:
                 return f"Invalid key: {key}" 
+
         # perform checks on the mode: either simple or expert 
         experiment_mode = self._object['mode']
+        experiment_type = self._object['type']
+
         if not experiment_mode in self._valid_modes:
             return f"Invalid mode: {experiment_mode}"
+        
+        if not experiment_type in self._valid_experiment_type:
+            return f"Invalid type: {experiment_type}"
 
-        self._mode = experiment_mode
+        self._experiment_mode = experiment_mode
+        self._experiment_type = experiment_type
+
         qs_list = self._object['query_strategy']
+
         self.query_strategies_sanity(experiment_mode, qs_list)
         return 
 

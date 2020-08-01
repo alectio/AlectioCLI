@@ -55,24 +55,24 @@ class Experiment(BaseAttribute):
         #     raise "Path to query strategies not found"
         
         # # parse yaml and check for any issues wihtin the file
-        # strategies = ParseStrategyYaml(strategy_path)
+        strategies = ParseStrategyYaml(strategy_path)
 
-        # experiment_mode = strategies.experiment_mode
-        # query_strategy_list = strategies.qs_list
-        # experiment_type = strategies.experiment_type
+        experiment_mode = strategies.experiment_mode
+        query_strategy_list = strategies.qs_list
+        experiment_type = strategies.experiment_type
         # outputs for strategies from yaml
-        # print(experiment_mode)
-        # print(query_strategy_list)
-        # print(experiment_type)
+        print(experiment_mode)
+        print(query_strategy_list)
+        print(experiment_type)
 
-        # change to camel case 
-        queryStrat = [{"nRec": 100, "qs": "random"}, {"nRec": 200, "qs": "margin"}]
-        query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
-        params = {
-            "queryStratData": queryStrat
-        }
-        # make sure the backend airlfow gets triggered 
-        print(self._client.execute(query, params))
+        #TODO: change to camel case 
+        # queryStrat = [{"nRec": 100, "qs": "random"}, {"nRec": 200, "qs": "margin"}]
+        # query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
+        # params = {
+        #     "queryStratData": queryStrat
+        # }
+        # # make sure the backend airlfow gets triggered 
+        # print(self._client.execute(query, params))
 
 
         # send the information to the backend to process 
