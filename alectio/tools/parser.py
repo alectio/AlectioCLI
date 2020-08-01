@@ -38,7 +38,6 @@ class ParseStrategyYaml():
             qs_name = qs_names[0]
             query_strategy_object = query_strategy[qs_name]   
             self.simple_fields_sanity(qs_name, query_strategy_object)
-            self._qs_list = query_strategy_object
         else:  
             # TODO: write expert mode fields  
             return 
@@ -54,6 +53,8 @@ class ParseStrategyYaml():
         :params: qs_object - query object
         """
         qs_object_keys = list(qs_object.keys())
+        query_strategy_object = qs_object
+        query_strategy_object['qs'] = qs
 
         # generic fields that apply to random and other qs 
         if not 'n_rec' in qs_object_keys:
@@ -61,8 +62,12 @@ class ParseStrategyYaml():
 
         # check if it is the correct type
         n_rec = qs_object['n_rec']
+
         if not isinstance(n_rec, int):
             return f"n_rec field must be an integer"
+
+        query_strategy_object['nRec'] = n_rec
+        del query_strategy_object['n_rec']
 
         if not qs == "random":
             if not 'type' in qs_object_keys:
@@ -72,9 +77,13 @@ class ParseStrategyYaml():
             if not type in self._valid_intervals:
                 return f"invalid query strategy type"
 
+            query_strategy_object['type'] = type
+
+        # query strat fields are good, can use.   
+
+        self._qs_list.append(query_strategy_object)
         return 
 
-    
     def expert_fields_sanity(self, qs_list, qs_objects):
         """
         check expert fields for.

@@ -60,19 +60,24 @@ class Experiment(BaseAttribute):
         experiment_mode = strategies.experiment_mode
         query_strategy_list = strategies.qs_list
         experiment_type = strategies.experiment_type
-        # outputs for strategies from yaml
-        print(experiment_mode)
-        print(query_strategy_list)
-        print(experiment_type)
 
-        #TODO: change to camel case 
-        # queryStrat = [{"nRec": 100, "qs": "random"}, {"nRec": 200, "qs": "margin"}]
-        # query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
-        # params = {
-        #     "queryStratData": queryStrat
-        # }
-        # # make sure the backend airlfow gets triggered 
-        # print(self._client.execute(query, params))
+        print("this is my qs list")
+        print(query_strategy_list)
+
+        # convert all n_rec cases to camel case for grqphql
+        params = {
+            "queryStratData": query_strategy_list,
+            "projectId": self._project_id,
+            "experimentId": self._id,
+            "type": experiment_type,
+            "mode": experiment_mode 
+        }
+
+    
+        query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
+        # make sure the backend airlfow gets triggered 
+        res = self._client.execute(query, params)
+        print(res)
 
 
         # send the information to the backend to process 
@@ -91,6 +96,12 @@ class Experiment(BaseAttribute):
         if pk == self._id:
             self._project_id = sk
         return
+
+    def to_camel_case(self, snake_str):
+        components = snake_str.split('_')
+        # We capitalize the first letter of each component except the first one
+        # with the 'title' method and join them together.
+        return components[0] + ''.join(x.title() for x in components[1:])
 
 
     def __repr__(self):
