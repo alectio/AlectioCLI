@@ -1,6 +1,6 @@
 resource: Strategy
 type: "regular_al"
-mode: expert
+mode: "expert"
 query_strategy:
   confidence:
     over: 0.5

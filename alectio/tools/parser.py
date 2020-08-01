@@ -14,6 +14,7 @@ class ParseStrategyYaml():
         self._required_fields = ["mode", "query_strategy", "type", "resource"]
         self._valid_query_strategies = ["random", "confidence", "margin", "entropy"]
         self._valid_modes = ["simple", "expert"]
+        self._valid_intervals = ["lowest", "highest"]
         self._qs_list = []
         self._experiment_mode = None
         self._object = self.parse_yaml(path)
@@ -25,15 +26,7 @@ class ParseStrategyYaml():
         """
         query strategies formated in the yaml
         """
-
-        # check if the list of query strategies are valid 
-        # [{'confidence': ['lowest']}] simple for non random
-
-        # edge case for random
-        # if query_strategy[0]
-        print("########")
         qs_names = list(query_strategy.keys())
-        print(qs_names)
         for qs in qs_names:
             if not qs in self._valid_query_strategies:
                 return f"Invalid query strategy {qs}"
@@ -41,25 +34,55 @@ class ParseStrategyYaml():
         # check against the mode, each mode will have a variable amount of query strats
         if experiment_mode == "simple":
             qs_name = qs_names[0]
-            if qs_name == "random":
-                print("random qs")
-                return
-            else:
-                return         
+            query_strategy_object = query_strategy[qs_name]
+            print("query strategy object")
+            print(query_strategy_object)     
+            self.simple_fields_sanity(qs_name, query_strategy_object)
+            self._qs_list = query_strategy_object
+            return
         else:   
             return 
         # expert mode
 
         return 
 
+
+    def simple_fields_sanity(self, qs, qs_object):
+        """
+        check fields for simple qs 
+        :params: qs - query strat
+        :params: qs_object - query object
+        """
+        qs_object_keys = list(qs_object.keys())
+        # generic fields that apply to random and other qs 
+        if not 'n_rec' in qs_object_keys:
+            return f"n_rec field not found"
+            # check if it is the correct type
+        n_rec = qs_object['n_rec']
+        if not isinstance(n_rec, int):
+            return f"n_rec field must be an integer"
+
+        if not qs == "random":
+            if not 'type' in qs_object_keys:
+                return f"n_rec field not found"
+
+            type = qs_object['type']
+            if not type in self._valid_intervals:
+                return f"invalid query strategy type"
+
+        return 
+
     
+    def expert_fields_sanity(self, qs_list, qs_objects):
+        """
+        check expert fields for 
+        """
+        return 
+
     def sanity_checks(self):
         """
-        perform specific file checks
+        perform file sanity checks to make sure the data 
         """
-        # perform general sanity checks 
-        # super().general_sanity_checks()
-        print("here 0")
         yaml_object = self._object
         print(yaml_object)
 
@@ -69,17 +92,12 @@ class ParseStrategyYaml():
                 continue
             elif key not in self._required_fields:
                 return f"Invalid key: {key}" 
-        print("here 1")
         # perform checks on the mode: either simple or expert 
         experiment_mode = self._object['mode']
         if not experiment_mode in self._valid_modes:
             return f"Invalid mode: {experiment_mode}"
-        print("here 10")
         self._mode = experiment_mode
         qs_list = self._object['query_strategy']
-        print("this is my qs list")
-        print(qs_list)
-
         self.query_strategies_sanity(experiment_mode, qs_list)
 
         return 

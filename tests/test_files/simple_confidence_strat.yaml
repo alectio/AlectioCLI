@@ -1,6 +1,6 @@
 resource: Strategy
 type: "regular_al"
-mode: simple
+mode: "simple"
 query_strategy:
   confidence:
     type: lowest
