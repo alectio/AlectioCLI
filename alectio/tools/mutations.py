@@ -13,6 +13,13 @@ UPDATE_IP_PORT_MUTATION = """mutation updateProjectIp($userId: String!, $project
 }"""
 
 
+UPLOAD_QUERY_STRATEGY_MUTATION = """mutation uploadQueryStrategyMutation($queryStratData: [QueryStrategyInput], $projectId: String!, $experimentId: String!, $type: String!, $mode: String!) {
+    uploadQueryStrategyMutation(queryStratData: $queryStratData, projectId:$projectId, experimentId:$experimentId, type:$type, mode:$mode) {
+        ok
+        message
+    }
+}"""
+
 ##### FILE UPLOAD MUTATIONS #####
 
 UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!) {
