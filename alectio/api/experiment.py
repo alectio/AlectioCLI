@@ -4,7 +4,7 @@ from gql import gql
 from alectio.api.base_attribute import BaseAttribute
 from alectio.tools.utils import extract_id
 from alectio.tools.parser import ParseStrategyYaml
-from alectio.tools.mutations import START_EXPERIMENT_MUTATION
+from alectio.tools.mutations import START_EXPERIMENT_MUTATION, UPLOAD_QUERY_STRATEGY_MUTATION
 
 
 class Experiment(BaseAttribute):
@@ -50,20 +50,29 @@ class Experiment(BaseAttribute):
         a qs.
         :params: a yaml file containing a strategy to use for the experiment.
         """
-        if strategy_path is None or not os.path.exists(strategy_path):
-        # need to upload, the qs list + mode 
-            raise "Path to query strategies not found"
+        # if strategy_path is None or not os.path.exists(strategy_path):
+        # # need to upload, the qs list + mode 
+        #     raise "Path to query strategies not found"
         
-        # parse yaml and check for any issues wihtin the file
-        strategies = ParseStrategyYaml(strategy_path)
+        # # parse yaml and check for any issues wihtin the file
+        # strategies = ParseStrategyYaml(strategy_path)
 
-        experiment_mode = strategies.experiment_mode
-        query_strategy_list = strategies.qs_list
-        experiment_type = strategies.experiment_type
+        # experiment_mode = strategies.experiment_mode
+        # query_strategy_list = strategies.qs_list
+        # experiment_type = strategies.experiment_type
         # outputs for strategies from yaml
-        print(experiment_mode)
-        print(query_strategy_list)
-        print(experiment_type)
+        # print(experiment_mode)
+        # print(query_strategy_list)
+        # print(experiment_type)
+
+        # change to camel case 
+        queryStrat = [{"nRec": 100, "qs": "random"}, {"nRec": 200, "qs": "margin"}]
+        query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
+        params = {
+            "queryStratData": queryStrat
+        }
+        # make sure the backend airlfow gets triggered 
+        print(self._client.execute(query, params))
 
 
         # send the information to the backend to process 
