@@ -1,6 +1,7 @@
 resource: Strategy
-type: "regular active learning"
+type: "regular_al"
 mode: simple
 query_strategy:
   random: 
+    n_rec: 1000
     type: None 

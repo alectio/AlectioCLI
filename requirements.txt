@@ -1,3 +1,0 @@
-gql
-keras
-opencv-python

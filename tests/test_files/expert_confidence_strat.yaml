@@ -1,5 +1,5 @@
 resource: Strategy
-type: "regular active learning"
+type: "regular_al"
 mode: expert
 query_strategy:
   confidence:
