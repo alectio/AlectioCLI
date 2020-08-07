@@ -74,13 +74,10 @@ class Experiment(BaseAttribute):
             "mode": experiment_mode 
         }
 
-        
-        # query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
+        query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
         # make sure the backend airlfow gets triggered 
-        # res = self._client.execute(query, params)
-        # print(res)
-
-
+        message = self._client.execute(query, params)
+        print(message)
         # send the information to the backend to process 
         return 
 
