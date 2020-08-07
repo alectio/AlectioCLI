@@ -22,6 +22,7 @@ class Project(BaseAttribute):
         self._client = client
         self._attr = attr # project attributes 
         self._prem_info = {}
+        self._name = attr['name']
         self._id = id
         self._user_id = user_id
         self._experiments = {}
@@ -88,7 +89,7 @@ class Project(BaseAttribute):
             self._prem_info = json.loads(attr['prem_info'])
 
     def __repr__(self):
-        return "<Project {}>".format(self._id)
+        return "<Project {}>".format(self._name)
 
 
     # def __str__(self):
