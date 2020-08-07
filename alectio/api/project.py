@@ -70,7 +70,6 @@ class Project(BaseAttribute):
         retreive experiments that belong to a project
         :params: project_id - a uuid
         """
-        # TODO: client connection in here ? 
         query = gql(EXPERIMENTS_QUERY_FRAGMENT)
         params = {
             "id": str(self._id),

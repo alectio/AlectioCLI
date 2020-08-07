@@ -12,9 +12,9 @@ class Experiment(BaseAttribute):
     def __init__(self, client, attr, user_id, id):
         self._client = client
         self._attr = attr # experiment attributes
+        self._name = attr['name'] 
         self._user_id = user_id
         self._id = id
-        self._name = attr['name'] 
         self._project_id = ""
         super().__init__(self._attr, self._id)
         self.set_project_id() # set experiment id based on partitition or sort key
@@ -51,6 +51,8 @@ class Experiment(BaseAttribute):
         a qs.
         :params: a yaml file containing a strategy to use for the experiment.
         """
+
+        # TODO: add assertion
         # if strategy_path is None or not os.path.exists(strategy_path):
         # # need to upload, the qs list + mode 
         #     raise "Path to query strategies not found"
@@ -62,8 +64,8 @@ class Experiment(BaseAttribute):
         query_strategy_list = strategies.qs_list
         experiment_type = strategies.experiment_type
 
-        print("this is my qs list")
-        print(query_strategy_list)
+        # print("this is my qs list")
+        # print(query_strategy_list)
 
         # convert all n_rec cases to camel case for grqphql
         params = {
