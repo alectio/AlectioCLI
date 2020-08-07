@@ -34,10 +34,11 @@ class Experiment(BaseAttribute):
             "projectId": self._project_id,
             "experimentId": self._id
         }
-        # make sure the backend airlfow gets triggered 
-        print(self._client.execute(query, params))
 
-        # just pass in user_id + project_id + experiment_id
+        # make sure the backend airlfow gets triggered 
+        res = self._client.execute(query, params)
+        print(res)
+
         return 
 
     def upload_query_strategy(self, strategy_path):
@@ -64,9 +65,10 @@ class Experiment(BaseAttribute):
         query_strategy_list = strategies.qs_list
         experiment_type = strategies.experiment_type
 
-        # print("this is my qs list")
-        # print(query_strategy_list)
-
+        print("this is my qs list")
+        print(query_strategy_list)
+        print("##################")
+        print(experiment_type)
         # convert all n_rec cases to camel case for grqphql
         params = {
             "queryStratData": query_strategy_list,

@@ -59,6 +59,16 @@ query_strategy:
     type: None 
 ```
 
+```yaml
+resource: Strategy
+type: "regular_al"
+mode: "simple"
+query_strategy:
+  confidence:
+    type: lowest
+    n_rec: 100
+```
+
 ```python
 experiment.upload_query_strategy("path_to_yaml_file")
 ```

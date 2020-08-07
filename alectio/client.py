@@ -57,7 +57,7 @@ class AlectioClient:
         self._upload_client = GraphQLClient('http://localhost:5005/graphql')
 
         # need to retrive user_id based on token @ DEVI from OPENID 
-        self._user_id = "8a90a570972811eaad5238c986352c36" # ideally this should be set already 
+        self._user_id = "82b4fb909f1f11ea9d300242ac110002" # ideally this should be set already 
         # compnay id = 7774e1ca972811eaad5238c986352c36
 
     def get_single(self, resource, query_string, params):
