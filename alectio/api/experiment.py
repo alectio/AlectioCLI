@@ -12,11 +12,12 @@ class Experiment(BaseAttribute):
     def __init__(self, client, attr, user_id, id):
         self._client = client
         self._attr = attr # experiment attributes
+        self._name = attr['name'] 
         self._user_id = user_id
         self._id = id
         self._project_id = ""
         super().__init__(self._attr, self._id)
-        self.set_project_id()
+        self.set_project_id() # set experiment id based on partitition or sort key
         
 
     # TODO: start_auto ? if its auto al then you do not need to upload anything.
@@ -33,10 +34,11 @@ class Experiment(BaseAttribute):
             "projectId": self._project_id,
             "experimentId": self._id
         }
-        # make sure the backend airlfow gets triggered 
-        print(self._client.execute(query, params))
 
-        # just pass in user_id + project_id + experiment_id
+        # make sure the backend airlfow gets triggered 
+        res = self._client.execute(query, params)
+        print(res)
+
         return 
 
     def upload_query_strategy(self, strategy_path):
@@ -50,6 +52,8 @@ class Experiment(BaseAttribute):
         a qs.
         :params: a yaml file containing a strategy to use for the experiment.
         """
+
+        # TODO: add assertion
         # if strategy_path is None or not os.path.exists(strategy_path):
         # # need to upload, the qs list + mode 
         #     raise "Path to query strategies not found"
@@ -63,7 +67,8 @@ class Experiment(BaseAttribute):
 
         print("this is my qs list")
         print(query_strategy_list)
-
+        print("##################")
+        print(experiment_type)
         # convert all n_rec cases to camel case for grqphql
         params = {
             "queryStratData": query_strategy_list,
@@ -73,13 +78,10 @@ class Experiment(BaseAttribute):
             "mode": experiment_mode 
         }
 
-    
         query = gql(UPLOAD_QUERY_STRATEGY_MUTATION)
         # make sure the backend airlfow gets triggered 
-        res = self._client.execute(query, params)
-        print(res)
-
-
+        message = self._client.execute(query, params)
+        print(message)
         # send the information to the backend to process 
         return 
 
@@ -105,7 +107,7 @@ class Experiment(BaseAttribute):
 
 
     def __repr__(self):
-        return "<Experiment {}>".format(self._id)
+        return "<Experiment {}>".format(self._name)
 
 
  

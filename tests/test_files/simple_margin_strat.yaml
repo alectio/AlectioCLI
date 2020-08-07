@@ -1,0 +1,7 @@
+resource: Strategy
+type: "regular_al"
+mode: "simple"
+query_strategy:
+  margin:
+    type: highest
+    n_rec: 1000
