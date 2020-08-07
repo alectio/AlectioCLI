@@ -14,9 +14,10 @@ class Experiment(BaseAttribute):
         self._attr = attr # experiment attributes
         self._user_id = user_id
         self._id = id
+        self._name = attr['name'] 
         self._project_id = ""
         super().__init__(self._attr, self._id)
-        self.set_project_id()
+        self.set_project_id() # set experiment id based on partitition or sort key
         
 
     # TODO: start_auto ? if its auto al then you do not need to upload anything.
@@ -105,7 +106,7 @@ class Experiment(BaseAttribute):
 
 
     def __repr__(self):
-        return "<Experiment {}>".format(self._id)
+        return "<Experiment {}>".format(self._name)
 
 
  

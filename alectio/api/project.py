@@ -91,6 +91,3 @@ class Project(BaseAttribute):
     def __repr__(self):
         return "<Project {}>".format(self._name)
 
-
-    # def __str__(self):
-    #     return "<Project {}>".format(self._id)
