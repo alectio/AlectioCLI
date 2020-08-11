@@ -4,4 +4,4 @@ mode: "simple"
 query_strategy:
   confidence:
     type: lowest
-    n_rec: 100
+    n_rec: 50

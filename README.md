@@ -47,7 +47,7 @@ experiment = client.experiment("experiment_id") # grab a single experiment
 Before running an experiment, make sure to have uploaded a query strategy or list of query strategies.
 Either chose your query strategy on the Alectio Platform, or upload a YAML resource.
 
-Example YAML:
+Example Random YAML:
 
 ```yaml
 resource: Strategy
@@ -58,7 +58,7 @@ query_strategy:
     n_rec: 1000
     type: None 
 ```
-
+Example Confidence YAML:
 ```yaml
 resource: Strategy
 type: "regular_al"

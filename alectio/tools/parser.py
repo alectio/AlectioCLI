@@ -3,6 +3,7 @@ Parse YAML files and perform sanity checks on the files.
 """
 import yaml
 
+from alectio.exceptions import YAMLFieldNotFound, InvalidYAMLField, InvalidYAMLFieldType
 
 
 class ParseStrategyYaml():
@@ -31,7 +32,7 @@ class ParseStrategyYaml():
         qs_names = list(query_strategy.keys())
         for qs in qs_names:
             if not qs in self._valid_query_strategies:
-                return f"Invalid query strategy {qs}"
+                raise InvalidYAMLField("qs", qs)
 
         # check against the mode, each mode will have a variable amount of query strats
         if experiment_mode == "simple":
@@ -58,30 +59,30 @@ class ParseStrategyYaml():
 
         # generic fields that apply to random and other qs 
         if not 'n_rec' in qs_object_keys:
-            return f"n_rec field not found"
+            raise YAMLFieldNotFound("n_rec")
 
         # check if it is the correct type
         n_rec = qs_object['n_rec']
 
         if not isinstance(n_rec, int):
-            return f"n_rec field must be an integer"
+            raise InvalidYAMLFieldType("n_rec", int)
 
         query_strategy_object['nRec'] = n_rec
         del query_strategy_object['n_rec']
 
         if not qs == "random":
             if not 'type' in qs_object_keys:
-                return f"n_rec field not found"
+                raise YAMLFieldNotFound("type")
 
             type = qs_object['type']
             if not type in self._valid_intervals:
-                return f"invalid query strategy type"
+                raise InvalidYAMLField("type", type)
 
             query_strategy_object['type'] = type
 
         # query strat fields are good, can use.   
-
         self._qs_list.append(query_strategy_object)
+        
         return 
 
     def expert_fields_sanity(self, qs_list, qs_objects):
@@ -101,17 +102,18 @@ class ParseStrategyYaml():
             if key == "resource":
                 continue
             elif key not in self._required_fields:
-                return f"Invalid key: {key}" 
+                raise YAMLFieldNotFound(key)
 
         # perform checks on the mode: either simple or expert 
         experiment_mode = self._object['mode']
         experiment_type = self._object['type']
 
         if not experiment_mode in self._valid_modes:
-            return f"Invalid mode: {experiment_mode}"
+            raise InvalidYAMLField("type", experiment_mode)
         
         if not experiment_type in self._valid_experiment_type:
-            return f"Invalid type: {experiment_type}"
+            raise InvalidYAMLField("type", experiment_type)
+
 
         self._experiment_mode = experiment_mode
         self._experiment_type = experiment_type
@@ -119,6 +121,7 @@ class ParseStrategyYaml():
         qs_list = self._object['query_strategy']
 
         self.query_strategies_sanity(experiment_mode, qs_list)
+
         return 
 
 
