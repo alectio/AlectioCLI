@@ -16,7 +16,8 @@ def original_yaml_paths():
         f"{pwd}/test_files/invalid_yamls/invalid_outer_field_not_found.yaml",
         f"{pwd}/test_files/invalid_yamls/invalid_simple_qs_field_not_found.yaml",
         f"{pwd}/test_files/invalid_yamls/invalid_simple_qs_field.yaml",
-        f"{pwd}/test_files/invalid_yamls/invalid_simple_qs_field_type.yaml"
+        f"{pwd}/test_files/invalid_yamls/invalid_simple_qs_field_type.yaml",
+        f"{pwd}/test_files/invalid_yamls/invalid_outer_field_value.yaml"
     ]
     # map over and eppend pwd
     return paths
@@ -28,6 +29,7 @@ def test_outer_field_not_found(original_yaml_paths):
         # original_model.update_model(new_model)
         ParseStrategyYaml(file)
     return 
+
 
 def test_qs_field_not_found(original_yaml_paths):
     file = original_yaml_paths[1]
@@ -46,6 +48,13 @@ def test_invalid_type_qs_fields(original_yaml_paths):
 def test_invalid_qs_fields(original_yaml_paths):
     file = original_yaml_paths[3]
     with pytest.raises(InvalidYAMLFieldType):
+        # original_model.update_model(new_model)
+        ParseStrategyYaml(file)
+    return 
+
+def test_outer_invalid_field(original_yaml_paths):
+    file = original_yaml_paths[4]
+    with pytest.raises(InvalidYAMLField):
         # original_model.update_model(new_model)
         ParseStrategyYaml(file)
     return 
