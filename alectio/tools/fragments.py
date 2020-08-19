@@ -82,6 +82,28 @@ USER_PAID_QUERY_FRAGMENT = """
     query userQuery($id: String!) {
         user(id: $id) {
             isPaid
+
+
+
+EXPERIMENT_CREATE_FRAGMENT = """
+    mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!, $alType: String!, $date: String!){
+        createExperiment(userId: $userId, projectId: $projectId, experimentId: $experimentId, name: $name, nLoops: $nLoops, nRecords: $nRecords, qs: $qs, alType: $alType, date: $date) {
+            ok
+        }
+    }
+"""
+
+PROJECT_CREATE_FRAGMENT = """
+    mutation CreateProject($userId: String!, $preLabeled: String!, $alectioDataset: String!, $modelType: String!,
+               $problemType: String!, $s3Bucket: String!, $premise: String!, $projectName: String!, $dataFormat: String!, 
+               $date: String!, $labelingType: Boolean!, $labelingCompany: Boolean!, $testLen: Int!, $trainLen: Int!, $allLabeled: Boolean!, $alectioDir: String!, $preLoadedModel: Boolean!
+               $dockerUrl: String!, $ip: String!, $port: Int!){
+        createProject(userId: $userId, preLabeled: $preLabeled, alectioDataset: $alectioDataset, 
+        modelType: $modelType, problemType: $problemType, s3Bucket: $s3Bucket, premise: $premise, 
+        projectName: $projectName, dataFormat: $dataFormat, date: $date, labelingType: $labelingType, 
+        labelingCompany: $labelingCompany, testLen: $testLen, trainLen: $trainLen, allLabeled: $allLabeled, 
+        alectioDir: $alectioDir, preLoadedModel: $preLoadedModel, dockerUrl: $dockerUrl, ip: $ip, port: $port) {
+            ok
         }
     }
 """
