@@ -20,7 +20,7 @@ class ParseStrategyYaml():
         self._experiment_mode = None
         self._experiment_type = None
         self._object = self.parse_yaml(path)
-        print(self._object)
+        #print(self._object)
         self.sanity_checks()
 
 
@@ -28,9 +28,18 @@ class ParseStrategyYaml():
         """
         query strategies formated in the yaml
         """
+        
+
+        
         qs_names = list(query_strategy.keys())
+
+        # TODO: make sure that the user knows the format for duplicate QS strategies: confidence_1, confidence_2, etc
+        # check that all QS's supplied are in our valid strategies list
         for qs in qs_names:
-            if not qs in self._valid_query_strategies:
+            _qs = qs
+            if "_" in _qs:
+                _qs = _qs.split("_")[0]
+            if not _qs in self._valid_query_strategies:
                 return f"Invalid query strategy {qs}"
 
         # check against the mode, each mode will have a variable amount of query strats
@@ -38,11 +47,86 @@ class ParseStrategyYaml():
             qs_name = qs_names[0]
             query_strategy_object = query_strategy[qs_name]   
             self.simple_fields_sanity(qs_name, query_strategy_object)
+            print("passed simple tests")
+
         else:  
-            # TODO: write expert mode fields  
-            return 
-        # expert mode
-        print("passed simple tests")
+            print("starting expert tests")
+            self.expert_fields_sanity(qs_names, query_strategy)
+            print("finished expert tests")
+        return 
+
+
+    '''
+    query_strategy:
+        confidence:
+            n_rec: 100
+            over: 0.5
+            under: 0.6
+        margin:
+            n_rec: 400
+            over: 0.5
+            under: 0.6
+        confidence_1:
+            n_rec: 400
+            over: 0.4
+            under: 0.6
+    '''
+    def expert_fields_sanity(self, qs_list, qs_objects):
+        """
+        check expert fields for:
+            - uniqueness (no QS top level key can be the same)
+            - valid data type
+            - completeness
+        """
+        #check for uniqueness of qs_object key names
+
+        if not len(set(qs_list)) == len(qs_list):
+            #duplicate names exist
+            print(f"make sure all your QS's under the query_strategy key have unique names, for example confidence_1, confidence_2, etc")
+            return
+
+        for qs in qs_objects:
+            obj = qs_objects[qs]
+            print(qs, "->", obj)
+
+            if "random" in qs:
+                if not "n_rec" in qs_objects[qs].keys():
+                    print(f"n_rec must be a key of", qs)
+                    return
+                if not isinstance(qs_objects[qs]["n_rec"], int):
+                    print(f"n_rec must be an integer, right now it is", type(qs_objects[qs]["n_rec"]))
+                    return 
+            else:
+                # verification of n_rec
+                if not "n_rec" in qs_objects[qs].keys():
+                    print(f"n_rec must be a key of", qs)
+                    return
+                if not isinstance(qs_objects[qs]["n_rec"], int):
+                    print(f"n_rec must be an integer, right now it is", type(qs_objects[qs]["n_rec"]))
+                
+                #verification of over
+                if not "over" in qs_objects[qs].keys():
+                    print(f"You need to supply the over key for {qs}")
+                    return
+                if not isinstance(qs_objects[qs]["over"], float):
+                    print(f"over must be an float, right now it is", type(qs_objects[qs]["over"]))
+                
+                #verification of under
+                if not "under" in qs_objects[qs].keys():
+                    print(f"You need to supply the under key for {qs}")
+                    return
+                if not isinstance(qs_objects[qs]["over"], float):
+                    print(f"over must be an float, right now it is", type(qs_objects[qs]["over"]))
+
+                #verification that under > over
+
+                if not qs_objects[qs]["under"] > qs_objects[qs]["over"]:
+                    print(f"under key must be greater than over key for {qs}")
+                    return
+        
+        # all sanity checks have passed, we can add the QS objects to our qs list. 
+        self._qs_list.extend(qs_objects)
+
         return 
 
 
@@ -84,11 +168,7 @@ class ParseStrategyYaml():
         self._qs_list.append(query_strategy_object)
         return 
 
-    def expert_fields_sanity(self, qs_list, qs_objects):
-        """
-        check expert fields for.
-        """
-        return 
+   
 
     def sanity_checks(self):
         """
@@ -118,7 +198,7 @@ class ParseStrategyYaml():
 
         qs_list = self._object['query_strategy']
 
-        self.query_strategies_sanity(experiment_mode, qs_list)
+        print(self.query_strategies_sanity(experiment_mode, qs_list))
         return 
 
 
@@ -155,3 +235,5 @@ class ParseStrategyYaml():
         return self._experiment_type
 
      
+if __name__ == "__main__":
+    parser = ParseStrategyYaml("../../tests/test_files/expert_multiple_strat.yaml")

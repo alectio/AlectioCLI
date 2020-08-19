@@ -78,6 +78,11 @@ PROJECT_QUERY_FRAGMENT = """
     }
 """
 
+USER_PAID_QUERY_FRAGMENT = """
+    query userQuery($id: String!) {
+        user(id: $id) {
+            isPaid
+
 
 
 EXPERIMENT_CREATE_FRAGMENT = """
