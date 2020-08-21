@@ -244,7 +244,6 @@ class AlectioClient:
 
     This method will upload the meta.json file to the S3 storage bucket of the newly created project.
     
-    self._user_id
     '''
     def upload_class_labels(self, class_labels_file, project_id):
         # upload meta.json file
@@ -256,17 +255,13 @@ class AlectioClient:
             #upload to project_id/meta.json
 
             data = json.dumps(data)
-
-            print("the data we're passing is", data, type(data))
             
             params = {
                 "userId": self._user_id,
                 "projectId": project_id,
                 "classLabels": data
             }
-
-
-
+            
             response = self.mutate_single(UPLOAD_CLASS_LABELS_MUTATION, params)
 
     
