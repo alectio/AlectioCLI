@@ -21,6 +21,7 @@ from alectio.api.model import Model
 
 from alectio.tools.utils import extract_id
 from alectio.tools.fragments import *
+from alectio.tools.mutations import *
 
 from alectio.exceptions import APIKeyNotFound
 
@@ -238,6 +239,32 @@ class AlectioClient:
         
         return "Done"
 
+    '''
+    Precondition: create_project has been called
+
+    This method will upload the meta.json file to the S3 storage bucket of the newly created project.
+    
+    '''
+    def upload_class_labels(self, class_labels_file, project_id):
+        # upload meta.json file
+
+        data = {}
+        
+        with open(class_labels_file) as f:
+            data = json.load(f) #serialize json object to a string to be sent to server
+            #upload to project_id/meta.json
+
+            data = json.dumps(data)
+            
+            params = {
+                "userId": self._user_id,
+                "projectId": project_id,
+                "classLabels": data
+            }
+            
+            response = self.mutate_single(UPLOAD_CLASS_LABELS_MUTATION, params)
+
+    
     def create_experiment(self, file):
         """
         create user experient

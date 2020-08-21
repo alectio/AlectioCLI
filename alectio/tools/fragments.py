@@ -82,11 +82,12 @@ USER_PAID_QUERY_FRAGMENT = """
     query userQuery($id: String!) {
         user(id: $id) {
             isPaid
-
+    """
 
 
 EXPERIMENT_CREATE_FRAGMENT = """
-    mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!, $alType: String!, $date: String!){
+    mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!, 
+    $alType: String!, $date: String!) {
         createExperiment(userId: $userId, projectId: $projectId, experimentId: $experimentId, name: $name, nLoops: $nLoops, nRecords: $nRecords, qs: $qs, alType: $alType, date: $date) {
             ok
         }

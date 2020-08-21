@@ -71,10 +71,10 @@ class Experiment(BaseAttribute):
         
         #Check if the user is a free or paid user, before we allow them to upload a querying strategy. 
 
-        if(not res["user"][0]["isPaid"]) {
+        if (not res["user"][0]["isPaid"]):
             print("You must be a paid user to upload a YAML file containing your strategy")
             return
-        }
+        
 
         # # parse yaml and check for any issues wihtin the file
         strategies = ParseStrategyYaml(strategy_path)

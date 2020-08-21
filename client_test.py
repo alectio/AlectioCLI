@@ -7,7 +7,7 @@ os.environ['CLIENT_SECRET'] = 'SIA0R7ENSsGDdvME2xfDD2c2Cwn8MiPuBLbIlJercFFMQ2EQ'
 os.environ['CLINET_ID'] = '4mZ2yyAxJmG99KxqWp3b0xf5'
 
 client = AlectioClient()
-client.init('/Users/devitripathy/Documents/Alectio/code/alectio-odic-client-cli/client_token.json')
+client.init('./client_token.json')
 
 #client.create_experiment('/Users/devitripathy/Documents/Alectio/code/AlectioCLI/alectio/experiment.yml')
-client.create_project('/Users/devitripathy/Documents/Alectio/code/AlectioCLI/alectio/project.yml')
+client.create_project('./tools/project.yml')

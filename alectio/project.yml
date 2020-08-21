@@ -5,7 +5,7 @@ Project:
     problemType: Classification
     s3Bucket: alectio-mnist
     premise: "false"
-    projectName: QL Project
+    projectName: Sample Project created from the Alectio CLI
     dataFormat: numerical
     date: 7/23/2020
     labelingType: True
