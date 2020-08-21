@@ -8,9 +8,11 @@ query_strategy:
     under: 0.6
   margin:
     n_rec: 400
-    over: 0.5
     under: 0.6
+    over: 0.5
   confidence_1:
-    n_rec: 400
+    n_rec: 23
     over: 0.5
     under: 0.6
+  random:
+    n_rec: 3245

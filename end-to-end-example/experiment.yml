@@ -1,0 +1,7 @@
+Experiment:
+    projectId: 17efb406e34611ea970ff40f243422fe
+    name: Second Project!
+    nLoops: 10
+    nRecords: 10
+    qs: confidence
+    alType: regular_al
