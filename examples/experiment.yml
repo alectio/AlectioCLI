@@ -1,7 +1,9 @@
 Experiment:
-    projectId: 17efb406e34611ea970ff40f243422fe
-    name: Second Project!
+    projectId: 7e2dd348e64c11ea8ef8f40f243422fe
+    name: Experiment 5
     nLoops: 10
     nRecords: 10
     qs: confidence
     alType: regular_al
+
+    
