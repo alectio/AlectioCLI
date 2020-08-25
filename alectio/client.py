@@ -118,7 +118,7 @@ class AlectioClient:
         class_name = lambda class_name: getattr(sys.modules[__name__], class_name)
         singular = self._client.execute(query, params)
         print(singular)
-        return True
+        return singular
 
 
     def get_collection(self, resource, query_string, params):
@@ -227,6 +227,7 @@ class AlectioClient:
         """
         create user project 
         """
+
         with open(file, 'r') as yaml_in:
             yaml_object = yaml.safe_load(yaml_in) # yaml_object will be a list or a dict
             project_dict = yaml_object['Project']
@@ -236,9 +237,10 @@ class AlectioClient:
             print(project_dict)
             params = project_dict
             response =  self.mutate_single(PROJECT_CREATE_FRAGMENT, params)
+            new_project_created = response["createProject"]["ok"]
+            return self.project(new_project_created)
         
-        return "Done"
-
+        return f"Failed to open file {file}"
     '''
     Precondition: create_project has been called
 
@@ -278,8 +280,9 @@ class AlectioClient:
             experiment_dict['date'] = now.strftime("%m-%d-%Y")
             params = experiment_dict
             response =  self.mutate_single(EXPERIMENT_CREATE_FRAGMENT, params)
+            new_experiment_created = response["createExperiment"]["ok"]
 
-        return "Done"
+        return self.experiment(new_experiment_created)
 
     # TODO:
     def create_model(self, model_path):

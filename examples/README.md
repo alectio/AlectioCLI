@@ -12,3 +12,32 @@ For this end-to-end demo we will be using the mnist / fashion-mnist dataset.
 8. Upload the querying strategy for the experiment. Broadly speaking, Alectio users have two options for uploading querying strategies (simple and advanced). In contrast to simple strategies, using advanced strategies allows you to run different active learning algorithms on different loops as well as specify the lower and upper bounds for confidence, margin, and entropy computations. For this demo, we will be using the simple querying strategy described in simple_confidence_strat.yml. Upload this strategy directly to the experiment by running the following command: `client.experiment("<EXPERIMENT_ID>").upload_query_strategy("simple_confidence_strat.yaml")`
 9. Next, we'll start the experiment. Starting an experiment lets our servers know that it's time to start the AL training process and it also triggers the SDK. You can start the experiment when ready with the command: `client.experiment("<EXPERIMENT_ID>").start()`
 
+A common set of commands using the CLI is included below for reference
+
+```python
+# create the client
+client = AlectioClient()
+
+# create project. 
+project = client.create_project('project.yml')
+
+project_id = project.id
+
+print(f"project id: {project_id}")
+
+# upload class labels file
+client.upload_class_labels("mnist_labels.json", project_id)
+
+# create experiment
+experiment = client.create_experiment("experiment.yml")
+
+experiment_id = experiment.id
+print(f"experiment id: {experiment_id}")
+
+# upload querying strategy for experiment
+experiment.upload_query_strategy("simple_confidence_strat.yaml")
+
+# start the experiment. 
+experiment.start()
+
+```

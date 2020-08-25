@@ -14,16 +14,23 @@ client = AlectioClient()
 
 
 # create project. 
-client.create_project('project.yml')
+project = client.create_project('project.yml')
+
+project_id = project.id
+
+print(f"project id: {project_id}")
 
 # upload class labels file
-client.upload_class_labels("mnist_labels.json", "7e2dd348e64c11ea8ef8f40f243422fe")
+client.upload_class_labels("mnist_labels.json", project_id)
 
 # create experiment
-client.create_experiment("experiment.yml")
+experiment = client.create_experiment("experiment.yml")
+
+experiment_id = experiment.id
+print(f"experiment id: {experiment_id}")
 
 # upload querying strategy for experiment
-client.experiment("bfb179f6e6ff11ea8786f40f243422fe").upload_query_strategy("simple_confidence_strat.yaml")
+experiment.upload_query_strategy("simple_confidence_strat.yaml")
 
 # start the experiment. 
-client.experiment("bfb179f6e6ff11ea8786f40f243422fe").start()
+experiment.start()
