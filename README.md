@@ -81,45 +81,57 @@ experiment.start() # run an experiment
 # End to End Example
 Before running an example, set up your SDK for your training, testing, and infering process. 
 
+### Create the project + upload class labels
 ```python
 # start alectio client 
 client = AlectioClient()
 
-# create user project
-project = client.create_project('./examples/project.yml')
+def create_project():
+  # create user project
+  project = client.create_project('./examples/project.yml')
+
+  # upload class labels file
+  client.upload_class_labels("mnist_labels.json", project_id)
+  return project
 
 project_id = project.id
 print(f"project id: {project_id}")
+```
+### Create the experiment + run the experiment 
 
-# upload class labels file
-client.upload_class_labels("mnist_labels.json", project_id)
+```python
+def create_sample_experiment():
+  # create an experiment associated to a project, make sure to 
+  # modify the projectId in the YAML. 
+  experiment = client.create_experiment("./examples/experiment.yml")
 
-# create an experiment associated to a project 
-experiment = client.create_experiment("./examples/experiment.yml")
+  experiment_id = experiment.id
+  print(f"experiment id: {experiment_id}")
 
-experiment_id = experiment.id
-print(f"experiment id: {experiment_id}")
+  # upload querying strategy for an experiment 
+  experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
+  
+  return experiment
 
-# upload querying strategy for an experiment 
-experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
-
-# start the experiment. 
+# uncomment code when the correct projectId in the YAML has been added. 
+experiment = create_sample_experiment()
+# start the experiment.
 experiment.start()
 ```
 
-# Class Labels Format
 
+### Sample Class Labels
 ```json 
 {
-        "0": "0",
-        "1": "1",
-        "2": "2",
-        "3": "3",
-        "4": "4",
-        "5": "5",
-        "6": "6",
-        "7": "7",
-        "8": "8",
-        "9": "9"
+        "0": "airplane",
+        "1": "cat",
+        "2": "dog",
+        "3": "truck",
+        "4": "frog",
+        "5": "automobile",
+        "6": "horse",
+        "7": "ship",
+        "8": "bird",
+        "9": "deer"
 }
 ```
