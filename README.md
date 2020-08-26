@@ -106,3 +106,20 @@ experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
 # start the experiment. 
 experiment.start()
 ```
+
+# Class Labels Format
+
+```json 
+{
+        "0": "0",
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9"
+}
+```
