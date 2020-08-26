@@ -12,10 +12,25 @@ os.environ['CLINET_ID'] = '4mZ2yyAxJmG99KxqWp3b0xf5'
 
 client = AlectioClient()
 
-# client.create_project('project.yml')
 
-client.upload_class_labels("mnist_labels.json", "e34cd94ce3f711ea9a1af40f243422fe")
+# create project. 
+project = client.create_project('project.yml')
 
-# client.create_experiment("experiment.yml")
+project_id = project.id
 
-# client.experiment("7d4aa73ee34611eab8f3f40f243422fe").start()
+print(f"project id: {project_id}")
+
+# upload class labels file
+client.upload_class_labels("mnist_labels.json", project_id)
+
+# create experiment
+experiment = client.create_experiment("experiment.yml")
+
+experiment_id = experiment.id
+print(f"experiment id: {experiment_id}")
+
+# upload querying strategy for experiment
+experiment.upload_query_strategy("simple_confidence_strat.yaml")
+
+# start the experiment. 
+experiment.start()
