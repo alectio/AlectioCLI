@@ -1,7 +1,0 @@
-resource: Strategy
-type: "regular_al"
-mode: "expert mode" # error here.
-query_strategy:
-  margin:
-    type: lowest
-    n_rec: "1000"

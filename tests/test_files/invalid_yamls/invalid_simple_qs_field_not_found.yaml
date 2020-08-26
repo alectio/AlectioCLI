@@ -1,7 +1,0 @@
-resource: Strategy
-type: "regular_al"
-mode: "simple"
-query_strategy:
-  margin:
-    dog: lowest
-    n_rec: 1000

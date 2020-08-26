@@ -2,6 +2,6 @@ resource: Strategy
 type: "regular_al"
 mode: "simple"
 query_strategy:
-  random: 
-    n_rec: 1000
-    type: None 
+  confidence:
+    type: lowest
+    n_rec: 100

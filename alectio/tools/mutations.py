@@ -48,4 +48,10 @@ START_EXPERIMENT_MUTATION = """mutation startExperimentMutation($userId: String!
     }
 }"""
 
+UPLOAD_CLASS_LABELS_MUTATION = """mutation uploadClassLabelsMutation($userId: String!, $projectId: String!, $classLabels: String!) {
+    uploadClassLabelsMutation(userId: $userId, projectId: $projectId, classLabels: $classLabels) {
+        ok
+    }
+}"""
+
 ##### FILE DOWNLOAD MUTATIONS #####

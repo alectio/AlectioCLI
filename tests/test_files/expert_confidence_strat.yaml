@@ -1,8 +1,0 @@
-resource: Strategy
-type: "regular_al"
-mode: "expert"
-query_strategy:
-  confidence:
-    over: 0.5
-    under: 0.6
-    n_rec: 100

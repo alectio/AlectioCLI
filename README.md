@@ -1,6 +1,6 @@
 # AlectioCLI
 
-The Aletio client library provides an alternative to our platform website. A user is able to view experiments, projects, and other resources associated with an Alectio account. In addition, a user is able to create resources (projects + expermients), and is able to run an experiment from the command line to trigger and sdk experiment on premise.
+The Alectio client library provides an alternative to our platform website. A user is able to view experiments, projects, and other resources associated with an Alectio account. In addition, a user is able to create resources (projects + expermients), and is able to run an experiment from the command line to trigger and sdk experiment on premise.
 
 For context, a project is a model plus dataset pair, and every project can have many active learning experiments. 
 
@@ -78,3 +78,31 @@ experiment.upload_query_strategy("path_to_yaml_file")
 experiment.start() # run an experiment 
 ```
 
+# End to End Example
+Before running an example, set up your SDK for your training, testing, and infering process. 
+
+```python
+# start alectio client 
+client = AlectioClient()
+
+# create user project
+project = client.create_project('./examples/project.yml')
+
+project_id = project.id
+print(f"project id: {project_id}")
+
+# upload class labels file
+client.upload_class_labels("mnist_labels.json", project_id)
+
+# create an experiment associated to a project 
+experiment = client.create_experiment("./examples/experiment.yml")
+
+experiment_id = experiment.id
+print(f"experiment id: {experiment_id}")
+
+# upload querying strategy for an experiment 
+experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
+
+# start the experiment. 
+experiment.start()
+```

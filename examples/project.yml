@@ -1,0 +1,21 @@
+Project:
+    preLabeled: "false"
+    alectioDataset: "false"
+    modelType: not required
+    problemType: Classification
+    s3Bucket: alectio-demo
+    premise: True
+    projectName: End-to-end-test
+    dataFormat: numerical
+    date: 8/20/2020
+    labelingType: True
+    labelingCompany: False
+    testLen: 10000
+    trainLen: 60000
+    allLabeled: True
+    alectioDir: False
+    preLoadedModel: True
+    dockerUrl: localhost
+    ip: "3.17.56.30"
+    port: 5000
+

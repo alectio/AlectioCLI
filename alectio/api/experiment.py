@@ -5,6 +5,7 @@ from alectio.api.base_attribute import BaseAttribute
 from alectio.tools.utils import extract_id
 from alectio.tools.parser import ParseStrategyYaml
 from alectio.tools.mutations import START_EXPERIMENT_MUTATION, UPLOAD_QUERY_STRATEGY_MUTATION
+from alectio.tools.fragments import USER_PAID_QUERY_FRAGMENT
 
 
 class Experiment(BaseAttribute):
@@ -57,7 +58,24 @@ class Experiment(BaseAttribute):
         # if strategy_path is None or not os.path.exists(strategy_path):
         # # need to upload, the qs list + mode 
         #     raise "Path to query strategies not found"
+
+
+        #TODO: tell the user somewhere that if they have multiple of the same QS in expert mode they need to 
+        #distinguish the new QS with an _
+
+        query = gql(USER_PAID_QUERY_FRAGMENT)
+        params = {
+            "id": self._user_id,
+        }
+        res = self._client.execute(query, params)
         
+        #Check if the user is a free or paid user, before we allow them to upload a querying strategy. 
+
+        if (not res["user"][0]["isPaid"]):
+            print("You must be a paid user to upload a YAML file containing your strategy")
+            return
+        
+
         # # parse yaml and check for any issues wihtin the file
         strategies = ParseStrategyYaml(strategy_path)
 
@@ -109,8 +127,6 @@ class Experiment(BaseAttribute):
     def __repr__(self):
         return "<Experiment {}>".format(self._name)
 
-
- 
 
   
 

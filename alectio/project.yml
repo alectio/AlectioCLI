@@ -1,0 +1,21 @@
+Project:
+    preLabeled: "false"
+    alectioDataset: "true"
+    modelType: not required
+    problemType: Classification
+    s3Bucket: alectio-mnist
+    premise: "false"
+    projectName: Sample Project created from the Alectio CLI
+    dataFormat: numerical
+    date: 7/23/2020
+    labelingType: True
+    labelingCompany: True
+    testLen: 0
+    trainLen: 0
+    allLabeled: False
+    alectioDir: False
+    preLoadedModel: True
+    dockerUrl: localhost
+    ip: localhost
+    port: 8080
+

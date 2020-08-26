@@ -1,0 +1,7 @@
+Experiment:
+    projectId: a147adb8e23211ea8934dca90491cc0e
+    name: Test Project QL
+    nLoops: 10
+    nRecords: 10
+    qs: entropy
+    alType: regular_al
