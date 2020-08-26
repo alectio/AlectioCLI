@@ -91,7 +91,7 @@ def create_project():
   project = client.create_project('./examples/project.yml')
 
   # upload class labels file
-  client.upload_class_labels("mnist_labels.json", project_id)
+  client.upload_class_labels("./examples/mnist_labels.json", project_id)
   return project
 
 project_id = project.id
