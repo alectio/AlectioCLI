@@ -19,7 +19,6 @@ def original_yaml_paths():
         f"{pwd}/test_files/invalid_yamls/invalid_simple_qs_field_type.yaml",
         f"{pwd}/test_files/invalid_yamls/invalid_outer_field_value.yaml"
     ]
-    # map over and eppend pwd
     return paths
 
 

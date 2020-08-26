@@ -43,7 +43,6 @@ class ParseStrategyYaml():
             # TODO: write expert mode fields  
             return 
         # expert mode
-        print("passed simple tests")
         return 
 
 
@@ -82,7 +81,7 @@ class ParseStrategyYaml():
 
         # query strat fields are good, can use.   
         self._qs_list.append(query_strategy_object)
-        
+
         return 
 
     def expert_fields_sanity(self, qs_list, qs_objects):
