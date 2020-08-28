@@ -28,7 +28,7 @@ class Job(BaseAttribute):
         return []
 
 
-    def upload_data(self, data, data_type):
+    def upload_data(self, data):
         """
         uploads the data to be labeled for a labeling partner. primarily used in sdk to automate the job process.
         :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
@@ -36,6 +36,7 @@ class Job(BaseAttribute):
         :params: job_id - job uuid 
         """
         base_class = None
+        data_type = "image"
 
         if not self._data_uploaded:
             return 
@@ -49,5 +50,5 @@ class Job(BaseAttribute):
         elif data_type == "numerical":
             base_class = NumericalDataUpload(self._client)
         # upload all the data asynchronously 
-        asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, self._id))
+        asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, self._id))
         return None 

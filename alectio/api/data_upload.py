@@ -22,7 +22,7 @@ class NumericalDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    async def upload_partner(self, numerical_file, job_id):
+    async def upload_data(self, numerical_file, job_id):
         # upload numerical data.
         variables = {
             'file': open(numerical_file, 'r')
@@ -38,7 +38,7 @@ class ImageDataUpload(BaseDataUpload):
     def __init__(self, client):
         super().__init__(client)
 
-    async def upload_partner(self, image_path_list, job_id):
+    async def upload_data(self, image_path_list, job_id):
         # upload all the images asynchronously ... 
         variables = {
             'files': [open(i, 'rb') for i in image_path_list]
@@ -55,7 +55,7 @@ class TextDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    async def upload_partner(self, text_file, job_id):
+    async def upload_data(self, text_file, job_id):
         # upload text data. 
         variables = {
             'file': open(text_file, 'r')
