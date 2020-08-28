@@ -14,7 +14,6 @@ from aiogqlc import GraphQLClient
 from gql.client import RetryError
 from gql.transport.requests import RequestsHTTPTransport
 
-from alectio.api.data_upload import TextDataUpload, ImageDataUpload, NumericalDataUpload
 from alectio.api.project import Project
 from alectio.api.experiment import Experiment 
 from alectio.api.model import Model 
@@ -103,7 +102,12 @@ class AlectioClient:
         hash_key =  extract_id(singular['pk'])
         if resource == "project":
            hash_key = extract_id(singular['sk'])
-        singular_object = class_to_init(self._client, singular, self._user_id, hash_key)
+        
+        if not resource == "job":
+            singular_object = class_to_init(self._client, singular, self._user_id, hash_key)
+
+        # job object class is slighty different in design 
+        singular_object = class_to_init(self._upload_client, singular, hash_key)
         return singular_object
 
 
@@ -115,7 +119,6 @@ class AlectioClient:
         :params: params - variables required to invoke query string in the client.
         """
         query = gql(query_string)
-        class_name = lambda class_name: getattr(sys.modules[__name__], class_name)
         singular = self._client.execute(query, params)
         print(singular)
         return singular
@@ -133,7 +136,9 @@ class AlectioClient:
         class_name = lambda class_name: getattr(sys.modules[__name__], class_name) # convert string to class name 
         collection = self._client.execute(query, params)[resource]
         class_to_init = class_name(singular_resource(resource))
-        collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
+        collection_objects = []
+        if not resource == "jobs":
+            collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
         return collection_objects
 
     def projects(self):
@@ -180,7 +185,6 @@ class AlectioClient:
 
     def models(self, organization_id):
         """
-        TODO:
         retrieve models associated with a user / organization.
         :params: project_id - a uuid
         """
@@ -192,7 +196,6 @@ class AlectioClient:
 
     def model(self, model_id):
         """
-        TODO:
         retrieve a single user model
         :params: project_id - a uuid
         """
@@ -201,46 +204,26 @@ class AlectioClient:
         }
         return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
+
+    def job(self, job_id):
+        """
+        returns a single labeling job
+        :params: job_id - job uuid
+        """
+
+        return None 
+
     def jobs(self, project_id, filter):
         """
         returns the list of jobs associated with a project 
         :params: project_id - list of jobs associated with a project id 
-        :params: filter - condition 
+        :params: filter - condition (pending, in_prgress, data_uploaded)
         """
         params = {
             "id": str(project_id)
         }
         return self.get_collection("jobs", EXPERIMENTS_QUERY_FRAGMENT, params)
 
-
-    def job(self, job_id):
-        params = {
-            "id": str(job_id)
-        }
-        return self.get_single("job", EXPERIMENTS_QUERY_FRAGMENT, params)
-
-
-    def upload_data_to_partner(self, data, data_type, job_id):
-        """
-        uploads the data to be labeled for a labeling partner. primarily used in sdk to automate the job process.
-        :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
-        :params: data_type - text, numerical, or image
-        :params: problem - object detection, image classsification, etc 
-        :params: partner - name of the labeling partner alectio intends to send the traffic to.
-        :params: meta - dictionary with meta information regarding data to be upload. i.e job_id, project_id, company_id, etc.
-        """
-        base_class = None 
-
-        if data_type == "text":
-            base_class = TextDataUpload(self._upload_client)
-        elif data_type == "image":
-            base_class = ImageDataUpload(self._upload_client)
-        elif data_type == "numerical":
-            base_class = NumericalDataUpload(self._upload_client)
-        # upload all the data asynchronously 
-        asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, job_id))
-
-        return None 
 
     def create_project(self, file):
         """
