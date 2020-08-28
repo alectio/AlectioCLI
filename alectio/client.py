@@ -205,14 +205,6 @@ class AlectioClient:
         return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
 
-    def job(self, job_id):
-        """
-        returns a single labeling job
-        :params: job_id - job uuid
-        """
-
-        return None 
-
     def jobs(self, project_id, filter):
         """
         returns the list of jobs associated with a project 
@@ -223,6 +215,16 @@ class AlectioClient:
             "id": str(project_id)
         }
         return self.get_collection("jobs", EXPERIMENTS_QUERY_FRAGMENT, params)
+
+    def job(self, job_id):
+        """
+        returns a single labeling job
+        :params: job_id - job uuid
+        """
+        params = {
+            "id": str(job_id)
+        }
+        return self.get_single("job", EXPERIMENT_QUERY_FRAGMENT, params)
 
 
     def create_project(self, file):
