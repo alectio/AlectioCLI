@@ -36,8 +36,11 @@ class Job(BaseAttribute):
         :params: job_id - job uuid 
         """
         base_class = None
+
         if not self._data_uploaded:
             return 
+
+        # grab the data type from the job attr.
 
         if data_type == "text":
             base_class = TextDataUpload(self._client)
