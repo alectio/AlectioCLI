@@ -87,6 +87,12 @@ class Project(BaseAttribute):
         if 'prem_info' in attr:
             self._prem_info = json.loads(attr['prem_info'])
 
+
+    def label_jobs(self):
+        # should return a list of jobs
+        return 
+
+
     def __repr__(self):
         return "<Project {}>".format(self._name)
 

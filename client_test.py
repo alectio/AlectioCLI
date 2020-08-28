@@ -10,4 +10,3 @@ client = AlectioClient()
 client.init('./client_token.json')
 
 #client.create_experiment('/Users/devitripathy/Documents/Alectio/code/AlectioCLI/alectio/experiment.yml')
-client.create_project('./tools/project.yml')

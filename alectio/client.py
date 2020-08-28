@@ -66,7 +66,7 @@ class AlectioClient:
         self._oauth_server = 'http://localhost:5000/'
         # need to retrive user_id based on token @ DEVI from OPENID 
         self._user_id = "82b4fb909f1f11ea9d300242ac110002" # ideally this should be set already. Dummy one will be set when init is invoked
-        # compnay id = 7774e1ca972811eaad5238c986352c36
+        # compnay id = 7774e1ca972811eaad5238c986352c36s
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
 
     def request_client_token(self):
@@ -189,6 +189,7 @@ class AlectioClient:
         }
         return self.get_collection("models", MODELS_QUERY_FRAGMENT, params)
 
+
     def model(self, model_id):
         """
         TODO:
@@ -200,7 +201,26 @@ class AlectioClient:
         }
         return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
-    def upload_data_to_partner(self, data, data_type, problem, partner, meta):
+    def jobs(self, project_id, filter):
+        """
+        returns the list of jobs associated with a project 
+        :params: project_id - list of jobs associated with a project id 
+        :params: filter - condition 
+        """
+        params = {
+            "id": str(project_id)
+        }
+        return self.get_collection("jobs", EXPERIMENTS_QUERY_FRAGMENT, params)
+
+
+    def job(self, job_id):
+        params = {
+            "id": str(job_id)
+        }
+        return self.get_single("job", EXPERIMENTS_QUERY_FRAGMENT, params)
+
+
+    def upload_data_to_partner(self, data, data_type, job_id):
         """
         uploads the data to be labeled for a labeling partner. primarily used in sdk to automate the job process.
         :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
@@ -218,10 +238,9 @@ class AlectioClient:
         elif data_type == "numerical":
             base_class = NumericalDataUpload(self._upload_client)
         # upload all the data asynchronously 
-        asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, partner, problem, meta))
+        asyncio.get_event_loop().run_until_complete(base_class.upload_partner(data, job_id))
 
         return None 
-
 
     def create_project(self, file):
         """
@@ -241,14 +260,12 @@ class AlectioClient:
             return self.project(new_project_created)
         
         return f"Failed to open file {file}"
-    '''
-    Precondition: create_project has been called
-
-    This method will upload the meta.json file to the S3 storage bucket of the newly created project.
-    
-    '''
+  
     def upload_class_labels(self, class_labels_file, project_id):
-        # upload meta.json file
+        """
+        Precondition: create_project has been called
+        This method will upload the meta.json file to the S3 storage bucket of the newly created project.
+        """
 
         data = {}
         

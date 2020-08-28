@@ -10,15 +10,6 @@ import asyncio
 class BaseDataUpload():
     def __init__(self, client):
         self._client = client 
-        self._labeling_partners = ["daivergant", "seekncheck"]
-
-    def labeling_partner_exists(self, partner):
-        """
-        check if the labeling partner exists.
-        :params: partner
-        """
-        if not partner in self._labeling_partners:
-            raise "labeling partner not found"
 
 
 # keep in mind we have to pass in the meta information to the backend
@@ -31,8 +22,7 @@ class NumericalDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    async def upload_partner(self, numerical_file, partner, problem, meta={}):
-        super().labeling_partner_exists(partner)
+    async def upload_partner(self, numerical_file, job_id):
         # upload numerical data.
         variables = {
             'file': open(numerical_file, 'r')
@@ -48,8 +38,7 @@ class ImageDataUpload(BaseDataUpload):
     def __init__(self, client):
         super().__init__(client)
 
-    async def upload_partner(self, image_path_list, partner, problem, meta={}):
-        super().labeling_partner_exists(partner)
+    async def upload_partner(self, image_path_list, job_id):
         # upload all the images asynchronously ... 
         variables = {
             'files': [open(i, 'rb') for i in image_path_list]
@@ -66,8 +55,7 @@ class TextDataUpload(BaseDataUpload):
         super().__init__(client)
 
 
-    async def upload_partner(self, text_file, partner, problem, meta={}):
-        super().labeling_partner_exists(partner)
+    async def upload_partner(self, text_file, job_id):
         # upload text data. 
         variables = {
             'file': open(text_file, 'r')
