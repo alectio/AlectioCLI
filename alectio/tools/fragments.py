@@ -3,12 +3,12 @@ query fragments
 """
 
 
-##### QUERIES ##### 
+##### QUERIES #####
 
 EXPERIMENTS_QUERY_FRAGMENT = """
     query experimentsQuery($id: String!) {
         experiments(id: $id) {
-            pk, 
+            pk,
             sk,
             name,
             alType,
@@ -21,7 +21,7 @@ EXPERIMENTS_QUERY_FRAGMENT = """
 EXPERIMENT_QUERY_FRAGMENT = """
     query experimentQuery($id: String!) {
         experiment(id: $id) {
-            pk, 
+            pk,
             sk,
             name,
             alType,
@@ -34,7 +34,7 @@ EXPERIMENT_QUERY_FRAGMENT = """
 MODELS_QUERY_FRAGMENT = """
     query modelsQuery($id: String!) {
         models(id: $id) {
-            pk, 
+            pk,
             sk,
             name,
             checksum
@@ -45,7 +45,7 @@ MODELS_QUERY_FRAGMENT = """
 MODEL_QUERY_FRAGMENT = """
     query modelQuery($id: String!) {
         model(id: $id) {
-            pk, 
+            pk,
             sk,
             name,
             checksum
@@ -56,7 +56,7 @@ MODEL_QUERY_FRAGMENT = """
 PROJECTS_QUERY_FRAGMENT = """
     query projectsQuery($id: String!) {
         projects(id: $id) {
-            pk, 
+            pk,
             sk,
             name,
             type,
@@ -69,7 +69,7 @@ PROJECTS_QUERY_FRAGMENT = """
 PROJECT_QUERY_FRAGMENT = """
     query projectQuery($userId: String!, $projectId: String!) {
         project(userId: $userId, projectId: $projectId) {
-            pk, 
+            pk,
             sk,
             name,
             type,
@@ -88,7 +88,7 @@ USER_PAID_QUERY_FRAGMENT = """
 
 
 EXPERIMENT_CREATE_FRAGMENT = """
-    mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!, 
+    mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!,
     $alType: String!, $date: String!) {
         createExperiment(userId: $userId, projectId: $projectId, experimentId: $experimentId, name: $name, nLoops: $nLoops, nRecords: $nRecords, qs: $qs, alType: $alType, date: $date) {
             ok
@@ -98,13 +98,13 @@ EXPERIMENT_CREATE_FRAGMENT = """
 
 PROJECT_CREATE_FRAGMENT = """
     mutation CreateProject($userId: String!, $preLabeled: String!, $alectioDataset: String!, $modelType: String!,
-               $problemType: String!, $s3Bucket: String!, $premise: String!, $projectName: String!, $dataFormat: String!, 
+               $problemType: String!, $s3Bucket: String!, $premise: String!, $projectName: String!, $dataFormat: String!,
                $date: String!, $labelingType: Boolean!, $labelingCompany: Boolean!, $testLen: Int!, $trainLen: Int!, $allLabeled: Boolean!, $alectioDir: String!, $preLoadedModel: Boolean!
                $dockerUrl: String!, $ip: String!, $port: Int!){
-        createProject(userId: $userId, preLabeled: $preLabeled, alectioDataset: $alectioDataset, 
-        modelType: $modelType, problemType: $problemType, s3Bucket: $s3Bucket, premise: $premise, 
-        projectName: $projectName, dataFormat: $dataFormat, date: $date, labelingType: $labelingType, 
-        labelingCompany: $labelingCompany, testLen: $testLen, trainLen: $trainLen, allLabeled: $allLabeled, 
+        createProject(userId: $userId, preLabeled: $preLabeled, alectioDataset: $alectioDataset,
+        modelType: $modelType, problemType: $problemType, s3Bucket: $s3Bucket, premise: $premise,
+        projectName: $projectName, dataFormat: $dataFormat, date: $date, labelingType: $labelingType,
+        labelingCompany: $labelingCompany, testLen: $testLen, trainLen: $trainLen, allLabeled: $allLabeled,
         alectioDir: $alectioDir, preLoadedModel: $preLoadedModel, dockerUrl: $dockerUrl, ip: $ip, port: $port) {
             ok
         }
@@ -114,14 +114,12 @@ PROJECT_CREATE_FRAGMENT = """
 
 JOBS_QUERY_FRAGMENT = """
     query jobsQuery($id: String!, $userId: String!) {
-        jobs(id: $id, userId: $userId,) {
-            pk, 
+        jobs(id: $id, userId: $userId) {
+            pk,
             sk,
-            indices, 
+            indices,
             dataUploaded,
             dataType,
-            inProgress,
-            isPending
         }
     }
 """

@@ -1,5 +1,5 @@
 import requests
-import os 
+import os
 import json
 import asyncio
 import sys
@@ -15,8 +15,9 @@ from gql.client import RetryError
 from gql.transport.requests import RequestsHTTPTransport
 
 from alectio.api.project import Project
-from alectio.api.experiment import Experiment 
-from alectio.api.model import Model 
+from alectio.api.experiment import Experiment
+from alectio.api.model import Model
+from alectio.api.job import Job
 
 from alectio.tools.utils import extract_id
 from alectio.tools.fragments import *
@@ -26,10 +27,10 @@ from alectio.exceptions import APIKeyNotFound
 
 
 
-#TODO: all plural objects should be iterables -  A.Y 
+#TODO: all plural objects should be iterables -  A.Y
 class AlectioClient:
     def __init__(self, environ=os.environ):
-        self._environ = environ 
+        self._environ = environ
 
 
         if 'ALECTIO_API_KEY' not in self._environ:
@@ -37,7 +38,7 @@ class AlectioClient:
 
         self._api_key = self._environ['ALECTIO_API_KEY']
         self._client_secret = self._environ['CLIENT_SECRET']
-        self._client_id = self._environ['CLINET_ID']
+        self._client_id = self._environ['CLIENT_ID']
         self._client_token = None
 
         # cli user settings
@@ -47,7 +48,8 @@ class AlectioClient:
             'base_url': "http://localhost:5005"
         }
 
-        self._endpoint = f'{self._settings["base_url"]}/graphql'
+        # self._endpoint = f'{self._settings['base_url']}/graphql'
+        self._endpoint = self._settings['base_url'] + "/graphql"
 
         # graphql client
         self._client = Client(
@@ -59,14 +61,14 @@ class AlectioClient:
             fetch_schema_from_transport=True,
         )
 
-        # client to upload files, images, etc. 
+        # client to upload files, images, etc.
         # uses https://pypi.org/project/aiogqlc/
         self._upload_client = GraphQLClient('http://localhost:5005/graphql')
-        self._oauth_server = 'http://localhost:5000/'
-        # need to retrive user_id based on token @ DEVI from OPENID 
+        # self._oauth_server = 'http://localhost:5000/'
+        # need to retrive user_id based on token @ DEVI from OPENID
         self._user_id = "82b4fb909f1f11ea9d300242ac110002" # ideally this should be set already. Dummy one will be set when init is invoked
         # compnay id = 7774e1ca972811eaad5238c986352c36s
-        self.dir_path = os.path.dirname(os.path.realpath(__file__))
+        # self.dir_path = os.path.dirname(os.path.realpath(__file__))
 
     def request_client_token(self):
         pass
@@ -102,11 +104,11 @@ class AlectioClient:
         hash_key =  extract_id(singular['pk'])
         if resource == "project":
            hash_key = extract_id(singular['sk'])
-        
+
         if not resource == "job":
             singular_object = class_to_init(self._client, singular, self._user_id, hash_key)
 
-        # job object class is slighty different in design 
+        # job object class is slighty different in design
         singular_object = class_to_init(self._upload_client, singular, hash_key)
         return singular_object
 
@@ -133,7 +135,7 @@ class AlectioClient:
         """
         query = gql(query_string)
         singular_resource =  lambda resource_name: str(resource_name.title()[0:-1]) # format resource name to match one of the existing classes
-        class_name = lambda class_name: getattr(sys.modules[__name__], class_name) # convert string to class name 
+        class_name = lambda class_name: getattr(sys.modules[__name__], class_name) # convert string to class name
         collection = self._client.execute(query, params)[resource]
         class_to_init = class_name(singular_resource(resource))
         collection_objects = []
@@ -144,14 +146,14 @@ class AlectioClient:
 
     def projects(self):
         """
-        retrieve user projects 
-        :params: user_id - a uuid 
+        retrieve user projects
+        :params: user_id - a uuid
         """
         params = {
             "id": str(self._user_id),
         }
         return self.get_collection("projects", PROJECTS_QUERY_FRAGMENT, params)
-        
+
     def experiments(self, project_id):
         """
         retreive experiments that belong to a project
@@ -206,14 +208,15 @@ class AlectioClient:
         return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
 
-    def jobs(self, project_id, filter):
+    def jobs(self, project_id):
         """
-        returns the list of jobs associated with a project 
-        :params: project_id - list of jobs associated with a project id 
+        returns the list of jobs associated with a project
+        :params: project_id - list of jobs associated with a project id
         :params: filter - condition (pending, in_prgress, data_uploaded)
         """
         params = {
-            "id": str(project_id)
+            "id": str(project_id),
+            "userId": self._user_id
         }
         return self.get_collection("jobs", JOBS_QUERY_FRAGMENT, params)
 
@@ -230,7 +233,7 @@ class AlectioClient:
 
     def create_project(self, file):
         """
-        create user project 
+        create user project
         """
         with open(file, 'r') as yaml_in:
             yaml_object = yaml.safe_load(yaml_in) # yaml_object will be a list or a dict
@@ -243,9 +246,9 @@ class AlectioClient:
             response =  self.mutate_single(PROJECT_CREATE_FRAGMENT, params)
             new_project_created = response["createProject"]["ok"]
             return self.project(new_project_created)
-        
+
         return f"Failed to open file {file}"
-  
+
     def upload_class_labels(self, class_labels_file, project_id):
         """
         Precondition: create_project has been called
@@ -253,22 +256,22 @@ class AlectioClient:
         """
 
         data = {}
-        
+
         with open(class_labels_file) as f:
             data = json.load(f) #serialize json object to a string to be sent to server
             #upload to project_id/meta.json
 
             data = json.dumps(data)
-            
+
             params = {
                 "userId": self._user_id,
                 "projectId": project_id,
                 "classLabels": data
             }
-            
+
             response = self.mutate_single(UPLOAD_CLASS_LABELS_MUTATION, params)
 
-    
+
     def create_experiment(self, file):
         """
         create user experient
@@ -289,8 +292,8 @@ class AlectioClient:
     # TODO:
     def create_model(self, model_path):
         """
-        upload model checksum and verify there are enough models to check 
-        :returns: model object 
+        upload model checksum and verify there are enough models to check
+        :returns: model object
         """
         return Model("", "", "", "")
 
