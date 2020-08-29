@@ -231,7 +231,6 @@ class AlectioClient:
         """
         create user project 
         """
-
         with open(file, 'r') as yaml_in:
             yaml_object = yaml.safe_load(yaml_in) # yaml_object will be a list or a dict
             project_dict = yaml_object['Project']

@@ -15,18 +15,18 @@ from alectio.api.data_upload import TextDataUpload, ImageDataUpload, NumericalDa
 
 
 class Job(BaseAttribute):
-    def __init(self, client, id):
+    def __init(self, client, attr, id):
         self._client = client
         self._id = id
-        self._data_uploaded = True
-
+        self._data_uploaded = attr['dataUploaded']
+        self._indices = attr['indices']
+        self._data_type = attr['dataType']
 
     def indices(self):
         """
         return the indices to upload for the job
         """
-        return []
-
+        return self._indices
 
     def upload_data(self, data):
         """
@@ -35,19 +35,15 @@ class Job(BaseAttribute):
         :params: data_type - text, numerical, or image
         :params: job_id - job uuid 
         """
-        base_class = None
-        data_type = "image"
-
         if not self._data_uploaded:
             return 
 
         # grab the data type from the job attr.
-
-        if data_type == "text":
+        if self._data_type == "text":
             base_class = TextDataUpload(self._client)
-        elif data_type == "image":
+        elif self._data_type == "image":
             base_class = ImageDataUpload(self._client)
-        elif data_type == "numerical":
+        elif self._data_type == "numerical":
             base_class = NumericalDataUpload(self._client)
         # upload all the data asynchronously 
         asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, self._id))
