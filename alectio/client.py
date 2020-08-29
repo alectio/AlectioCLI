@@ -143,7 +143,7 @@ class AlectioClient:
             collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
 
         # jobs resource
-        collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['pk'])) for item in collection]
+        collection_objects = [class_to_init(self._upload_client, item, self._user_id, extract_id(item['pk'])) for item in collection]
         return collection_objects
 
     def projects(self):
