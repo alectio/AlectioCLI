@@ -15,7 +15,7 @@ from alectio.api.data_upload import TextDataUpload, ImageDataUpload, NumericalDa
 
 
 class Job(BaseAttribute):
-    def __init__(self, client, attr, id):
+    def __init__(self, client, attr, user_id,  id):
         self._client = client
         self._id = id
         self._data_uploaded = attr['dataUploaded']
@@ -49,3 +49,6 @@ class Job(BaseAttribute):
         # upload all the data asynchronously
         asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, self._id))
         return None
+
+    def __repr__(self):
+        return "<Job {}>".format(self._id)
