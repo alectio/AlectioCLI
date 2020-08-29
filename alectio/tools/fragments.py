@@ -84,7 +84,7 @@ USER_PAID_QUERY_FRAGMENT = """
             isPaid
         }
     }
-    """
+"""
 
 
 EXPERIMENT_CREATE_FRAGMENT = """
@@ -107,6 +107,21 @@ PROJECT_CREATE_FRAGMENT = """
         labelingCompany: $labelingCompany, testLen: $testLen, trainLen: $trainLen, allLabeled: $allLabeled, 
         alectioDir: $alectioDir, preLoadedModel: $preLoadedModel, dockerUrl: $dockerUrl, ip: $ip, port: $port) {
             ok
+        }
+    }
+"""
+
+
+JOBS_QUERY_FRAGMENT = """
+    query jobsQuery($id: String!, $userId: String!) {
+        jobs(id: $id, userId: $userId,) {
+            pk, 
+            sk,
+            indices, 
+            dataUploaded,
+            dataType,
+            inProgress,
+            isPending
         }
     }
 """

@@ -139,6 +139,7 @@ class AlectioClient:
         collection_objects = []
         if not resource == "jobs":
             collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
+        collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
         return collection_objects
 
     def projects(self):
@@ -214,7 +215,7 @@ class AlectioClient:
         params = {
             "id": str(project_id)
         }
-        return self.get_collection("jobs", EXPERIMENTS_QUERY_FRAGMENT, params)
+        return self.get_collection("jobs", JOBS_QUERY_FRAGMENT, params)
 
     def job(self, job_id):
         """

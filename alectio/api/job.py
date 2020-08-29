@@ -36,6 +36,7 @@ class Job(BaseAttribute):
         :params: job_id - job uuid 
         """
         if not self._data_uploaded:
+            print("data has been uploaded")
             return 
 
         # grab the data type from the job attr.
