@@ -26,7 +26,7 @@ class NumericalDataUpload(BaseDataUpload):
         # upload numerical data.
         variables = {
             'file': open(numerical_file, 'r'),
-            'job_id': job_id
+            'jobId': job_id
         }
         response = await self._client.execute(UPLOAD_PARTNER_NUMERICAL_MUTATION, variables=variables)
         print(await response.json())
@@ -43,7 +43,7 @@ class ImageDataUpload(BaseDataUpload):
         # upload all the images asynchronously ...
         variables = {
             'files': [open(i, 'rb') for i in image_path_list],
-            'job_id': job_id
+            'jobId': job_id
         }
         response = await self._client.execute(UPLOAD_PARTNER_IMAGE_MUTATION, variables=variables)
         print(await response.json())
@@ -61,7 +61,7 @@ class TextDataUpload(BaseDataUpload):
         # upload text data.
         variables = {
             'file': open(text_file, 'r'),
-            'job_id': job_id
+            'jobId': job_id
         }
         response = await self._client.execute(UPLOAD_PARTNER_TEXT_MUTATION, variables=variables)
         print(await response.json())

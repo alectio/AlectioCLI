@@ -35,7 +35,7 @@ class Job(BaseAttribute):
         :params: data_type - text, numerical, or image
         :params: job_id - job uuid
         """
-        if not self._data_uploaded:
+        if self._data_uploaded:
             print("data has been uploaded")
             return
 

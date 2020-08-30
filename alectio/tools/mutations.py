@@ -22,8 +22,8 @@ UPLOAD_QUERY_STRATEGY_MUTATION = """mutation uploadQueryStrategyMutation($queryS
 
 ##### FILE UPLOAD MUTATIONS #####
 
-UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!) {
-    uploadPartnerImageMutation(files: $files) {
+UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!, $jobId: String!) {
+    uploadPartnerImageMutation(files: $files, jobId: $jobId) {
         ok
     }
 }"""
