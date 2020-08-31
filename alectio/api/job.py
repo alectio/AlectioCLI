@@ -35,7 +35,7 @@ class Job(BaseAttribute):
         example: {
             "2": path_to record,
             "5": path_to_record,
-            "9": path_to_record
+            "9": path_to_record,
         }
         keys - indices to be uploaded
         values - path to the record
@@ -46,11 +46,12 @@ class Job(BaseAttribute):
             print("data has been uploaded")
             return
 
-        data = []
-        indices = []
-        for k, v in data_map:
-            indices.append(k)
-            data.append(v)
+        records = []
+        for k,v in data_map.items():
+            temp = {}
+            temp['id'] = k
+            temp['path'] = v
+            records.append(temp)
 
         # grab the data type from the job attr.
         if self._data_type == "text":
@@ -60,7 +61,7 @@ class Job(BaseAttribute):
         elif self._data_type == "numerical":
             base_class = NumericalDataUpload(self._client)
         # upload all the data asynchronously
-        asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, indices, self._id))
+        asyncio.get_event_loop().run_until_complete(base_class.upload_data(records, self._id))
         return None
 
     def __repr__(self):
