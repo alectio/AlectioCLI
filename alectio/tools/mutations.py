@@ -22,20 +22,20 @@ UPLOAD_QUERY_STRATEGY_MUTATION = """mutation uploadQueryStrategyMutation($queryS
 
 ##### FILE UPLOAD MUTATIONS #####
 
-UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!, $jobId: String!) {
-    uploadPartnerImageMutation(files: $files, jobId: $jobId) {
+UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: Upload!, $records: [RecordsInput],  $jobId: String!) {
+    uploadPartnerImageMutation(files: $files, records: $records, jobId: $jobId) {
         ok
     }
 }"""
 
-
+# TODO: support for this
 UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($file: Upload!) {
     uploadPartnerTextMutation(file: $file) {
         ok
     }
 }"""
 
-
+# TODO: support fo this
 UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($file: Upload!) {
     uploadPartnerNumericalMutation(file: $file) {
         ok

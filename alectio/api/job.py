@@ -28,16 +28,29 @@ class Job(BaseAttribute):
         """
         return self._indices
 
-    def upload_data(self, data):
+    def upload_data(self, data_map):
         """
         uploads the data to be labeled for a labeling partner. primarily used in sdk to automate the job process.
-        :params: data - data interface to be uploaded: text_file, list of image paths, or numerical file,
+        :params: data_map - data interface to be uploaded: text_file, list of image paths, or numerical file,
+        example: {
+            "2": path_to record,
+            "5": path_to_record,
+            "9": path_to_record
+        }
+        keys - indices to be uploaded
+        values - path to the record
         :params: data_type - text, numerical, or image
         :params: job_id - job uuid
         """
         if self._data_uploaded:
             print("data has been uploaded")
             return
+
+        data = []
+        indices = []
+        for k, v in data_map:
+            indices.append(k)
+            data.append(v)
 
         # grab the data type from the job attr.
         if self._data_type == "text":
@@ -47,7 +60,7 @@ class Job(BaseAttribute):
         elif self._data_type == "numerical":
             base_class = NumericalDataUpload(self._client)
         # upload all the data asynchronously
-        asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, self._id))
+        asyncio.get_event_loop().run_until_complete(base_class.upload_data(data, indices, self._id))
         return None
 
     def __repr__(self):

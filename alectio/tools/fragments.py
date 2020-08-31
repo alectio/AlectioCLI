@@ -87,6 +87,8 @@ USER_PAID_QUERY_FRAGMENT = """
 """
 
 
+
+# TODO: refractor + reformat
 EXPERIMENT_CREATE_FRAGMENT = """
     mutation CreateExperiment($userId: String!, $projectId: String!, $experimentId: String!, $name: String!, $nLoops: Int!, $nRecords: Int!, $qs: String!,
     $alType: String!, $date: String!) {
