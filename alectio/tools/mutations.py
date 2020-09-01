@@ -29,15 +29,15 @@ UPLOAD_PARTNER_IMAGE_MUTATION = """mutation uploadPartnerImageMutation($files: U
 }"""
 
 # TODO: support for this
-UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($file: Upload!) {
-    uploadPartnerTextMutation(file: $file) {
+UPLOAD_PARTNER_TEXT_MUTATION = """mutation uploadPartnerTextMutation($files: Upload!, $records: [RecordsInput],  $jobId: String!) {
+    uploadPartnerTextMutation(files: $files, records: $records, jobId: $jobId) {
         ok
     }
 }"""
 
 # TODO: support fo this
-UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($file: Upload!) {
-    uploadPartnerNumericalMutation(file: $file) {
+UPLOAD_PARTNER_NUMERICAL_MUTATION = """mutation uploadPartnerNumericalMutation($files: Upload!, $records: [RecordsInput],  $jobId: String!) {
+    uploadPartnerNumericalMutation(files: $files, records: $records, jobId: $jobId) {
         ok
     }
 }"""

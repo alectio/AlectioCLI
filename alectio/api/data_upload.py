@@ -25,7 +25,7 @@ class NumericalDataUpload(BaseDataUpload):
         # TODO: review upload for numerical data
         # should upload one json ?
         variables = {
-            'file': open(numerical_file, 'r'),
+            'file': open(records, 'r'),
             'records': records,
             'jobId': job_id
         }
@@ -43,7 +43,7 @@ class ImageDataUpload(BaseDataUpload):
     async def upload_data(self, records, job_id):
         # upload all the images asynchronously ...
         variables = {
-            'files': [open(path, 'rb') for _, path in records.items()],
+            'files': [open(record['path'], 'rb') for record in records],
             'records': records,
             'jobId': job_id
         }
@@ -63,7 +63,7 @@ class TextDataUpload(BaseDataUpload):
 
         # upload text data.
         variables = {
-            'file': open(text_file, 'r'),
+            'file': open(records, 'r'),
             'records': records,
             'jobId': job_id
         }
