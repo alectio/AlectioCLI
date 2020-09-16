@@ -80,7 +80,6 @@ experiment.start() # run an experiment
 
 # End to End Example
 Before running an example, set up your SDK for your training, testing, and infering process. 
-
 ```python
 
  # start alectio client
@@ -107,4 +106,20 @@ Before running an example, set up your SDK for your training, testing, and infer
  
  # start the experiment.
  experiment.start()
+```
+
+### Sample Class Labels
+```json 
+{
+        "0": "airplane",
+        "1": "cat",
+        "2": "dog",
+        "3": "truck",
+        "4": "frog",
+        "5": "automobile",
+        "6": "horse",
+        "7": "ship",
+        "8": "bird",
+        "9": "deer"
+}
 ```
