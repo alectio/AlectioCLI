@@ -82,27 +82,29 @@ experiment.start() # run an experiment
 Before running an example, set up your SDK for your training, testing, and infering process. 
 
 ```python
-# start alectio client 
-client = AlectioClient()
 
-# create user project
-project = client.create_project('./examples/project.yml')
-
-project_id = project.id
-print(f"project id: {project_id}")
-
-# upload class labels file
-client.upload_class_labels("mnist_labels.json", project_id)
-
-# create an experiment associated to a project 
-experiment = client.create_experiment("./examples/experiment.yml")
-
-experiment_id = experiment.id
-print(f"experiment id: {experiment_id}")
-
-# upload querying strategy for an experiment 
-experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
-
-# start the experiment. 
-experiment.start()
+ # start alectio client
+ client = AlectioClient()
+ 
+ # creating project
+ print("creating alectio project.")
+ project = client.create_project('./examples/project.yml')
+ project_id = project.id
+ 
+ # upload class labels file
+ print("uploading class labels to project.")
+ client.upload_class_labels("./examples/mnist_labels.json", project_id)
+ 
+ os.environ['ALECTIO_PROJECT_ID'] = project_id
+ 
+ # create experiment + pass in env variable from the created project
+ print("creating alectio experiment.")
+ experiment = client.create_experiment("./examples/experiment.yml")
+ experiment_id = experiment.id
+ 
+ print("uploading sample querying strategy.")
+ experiment.upload_query_strategy("./examples/simple_confidence_strat.yaml")
+ 
+ # start the experiment.
+ experiment.start()
 ```
