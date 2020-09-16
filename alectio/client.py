@@ -107,6 +107,7 @@ class AlectioClient:
 
         if not resource == "job":
             singular_object = class_to_init(self._client, singular, self._user_id, hash_key)
+            return singular_object
 
         # job object class is slighty different in design
         singular_object = class_to_init(self._upload_client, singular, hash_key)
@@ -141,7 +142,7 @@ class AlectioClient:
         collection_objects = []
         if not resource == "jobs":
             collection_objects = [class_to_init(self._client, item, self._user_id, extract_id(item['sk'])) for item in collection]
-
+            return collection_objects
         # jobs resource
         collection_objects = [class_to_init(self._upload_client, item, self._user_id, extract_id(item['pk'])) for item in collection]
         return collection_objects
