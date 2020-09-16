@@ -310,6 +310,4 @@ class AlectioClient:
         """
         return Model("", "", "", "")
 
-
-
     # class for pagination for class elements.
