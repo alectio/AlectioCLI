@@ -1,5 +1,5 @@
 Experiment:
-    projectId: 7e2dd348e64c11ea8ef8f40f243422fe
+    projectId: ${ALECTIO_PROJECT_ID}
     name: Experiment 5
     nLoops: 10
     nRecords: 10

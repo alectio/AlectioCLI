@@ -5,6 +5,7 @@ import asyncio
 import sys
 import uuid
 import yaml
+from envyaml import EnvYAML
 
 from datetime import datetime
 
@@ -280,6 +281,13 @@ class AlectioClient:
         """
         create user experient
         """
+
+        env = EnvYAML(file)
+        project_id = env['Experiment.projectId']
+        if project_id is None:
+            print("no project id was set")
+            return
+
         with open(file, 'r') as yaml_in:
             yaml_object = yaml.safe_load(yaml_in) # yaml_object will be a list or a dict
             experiment_dict = yaml_object['Experiment']
@@ -287,8 +295,9 @@ class AlectioClient:
             experiment_dict['userId'] = self._user_id
             now = datetime.now()
             experiment_dict['date'] = now.strftime("%m-%d-%Y")
-            params = experiment_dict
-            response =  self.mutate_single(EXPERIMENT_CREATE_FRAGMENT, params)
+            # project id from the env variable
+            experiment_dict['projectId'] = project_id
+            response =  self.mutate_single(EXPERIMENT_CREATE_FRAGMENT, experiment_dict)
             new_experiment_created = response["createExperiment"]["ok"]
 
         return self.experiment(new_experiment_created)
