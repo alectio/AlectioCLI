@@ -8,29 +8,28 @@ import os
 
 os.environ["ALECTIO_API_KEY"] = 'xAzzL81g3A0wdhYs6AbGCfkla0o4VZab39e9WhUCOq4'
 os.environ['CLIENT_SECRET'] = 'SIA0R7ENSsGDdvME2xfDD2c2Cwn8MiPuBLbIlJercFFMQ2EQ'
-os.environ['CLINET_ID'] = '4mZ2yyAxJmG99KxqWp3b0xf5'
+os.environ['CLIENT_ID'] = '4mZ2yyAxJmG99KxqWp3b0xf5'
 
 client = AlectioClient()
 
-
-# create project. 
+# creating project
+print("creating alectio project.")
 project = client.create_project('project.yml')
-
 project_id = project.id
 
-print(f"project id: {project_id}")
-
 # upload class labels file
+print("uploading class labels to project.")
 client.upload_class_labels("mnist_labels.json", project_id)
 
-# create experiment
+os.environ['ALECTIO_PROJECT_ID'] = project_id
+
+# create experiment + pass in env variable from the created project
+print("creating alectio experiment.")
 experiment = client.create_experiment("experiment.yml")
-
 experiment_id = experiment.id
-print(f"experiment id: {experiment_id}")
 
-# upload querying strategy for experiment
+print("uploading sample querying strategy.")
 experiment.upload_query_strategy("simple_confidence_strat.yaml")
 
-# start the experiment. 
+# start the experiment.
 experiment.start()

@@ -36,9 +36,7 @@ class Experiment(BaseAttribute):
             "experimentId": self._id
         }
 
-        # make sure the backend airlfow gets triggered
         res = self._client.execute(query, params)
-        print(res)
         return
 
     def upload_query_strategy(self, strategy_path):
