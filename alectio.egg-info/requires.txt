@@ -1,6 +1,0 @@
-requests>=2
-gql
-keras
-opencv-python
-asyncio
-aiogqlc
