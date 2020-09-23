@@ -125,3 +125,15 @@ JOBS_QUERY_FRAGMENT = """
         }
     }
 """
+
+JOB_QUERY_FRAGMENT = """
+    query jobQuery($id: String!, $projectId: String!) {
+        job(id: $id, projectId: $projectId) {
+            pk,
+            sk,
+            indices,
+            dataUploaded,
+            dataType,
+        }
+    }
+"""

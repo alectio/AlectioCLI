@@ -27,12 +27,9 @@ from alectio.tools.mutations import *
 from alectio.exceptions import APIKeyNotFound
 
 
-
-#TODO: all plural objects should be iterables -  A.Y
 class AlectioClient:
     def __init__(self, environ=os.environ):
         self._environ = environ
-
 
         if 'ALECTIO_API_KEY' not in self._environ:
             raise APIKeyNotFound
@@ -71,6 +68,7 @@ class AlectioClient:
         # compnay id = 7774e1ca972811eaad5238c986352c36s
         # self.dir_path = os.path.dirname(os.path.realpath(__file__))
 
+
     def request_client_token(self):
         pass
 
@@ -82,14 +80,13 @@ class AlectioClient:
             requests_data = requests.get(
                 url=self._oauth_server + 'api/me', headers=headers)
             if requests_data.status_code == 401:
-                print("Clinet Token Expired. Fetching new one.")
+                print("Client Token Expired. Fetching new one.")
                 self.request_client_token()
             elif requests_data.status_code == 200:
                 requests_data = requests_data.json()
                 self._user_id = requests_data['id']
                 print(self._user_id)
 
-        #TODO: Create the token request if not present and save it to the disk
 
     def get_single(self, resource, query_string, params):
         """
@@ -111,7 +108,7 @@ class AlectioClient:
             return singular_object
 
         # job object class is slighty different in design
-        singular_object = class_to_init(self._upload_client, singular, hash_key)
+        singular_object = class_to_init(self._upload_client, singular, self.user_id, hash_key)
         return singular_object
 
 
@@ -149,6 +146,7 @@ class AlectioClient:
         collection_objects = [class_to_init(self._upload_client, item, self._user_id, extract_id(item['pk'])) for item in collection]
         return collection_objects
 
+
     def projects(self):
         """
         retrieve user projects
@@ -158,6 +156,7 @@ class AlectioClient:
             "id": str(self._user_id),
         }
         return self.get_collection("projects", PROJECTS_QUERY_FRAGMENT, params)
+
 
     def experiments(self, project_id):
         """
@@ -169,6 +168,7 @@ class AlectioClient:
         }
         return self.get_collection("experiments", EXPERIMENTS_QUERY_FRAGMENT, params)
 
+
     def experiment(self, experiment_id):
         """
         retreive experiments that belong to a project
@@ -178,6 +178,7 @@ class AlectioClient:
             "id": str(experiment_id),
         }
         return self.get_single("experiment", EXPERIMENT_QUERY_FRAGMENT, params)
+
 
     # grab user id + project id
     def project(self, project_id):
@@ -190,6 +191,7 @@ class AlectioClient:
              "projectId": str(project_id)
         }
         return self.get_single("project", PROJECT_QUERY_FRAGMENT, params)
+
 
     def models(self, organization_id):
         """
@@ -225,15 +227,17 @@ class AlectioClient:
         }
         return self.get_collection("jobs", JOBS_QUERY_FRAGMENT, params)
 
-    def job(self, job_id):
+
+    def job(self, job_id, project_id):
         """
         returns a single labeling job
         :params: job_id - job uuid
         """
         params = {
-            "id": str(job_id)
+            "id": str(job_id),
+            "projectId": str(project_id)
         }
-        return self.get_single("job", EXPERIMENT_QUERY_FRAGMENT, params)
+        return self.get_single("job", JOB_QUERY_FRAGMENT, params)
 
 
     def create_project(self, file):
@@ -245,7 +249,7 @@ class AlectioClient:
             project_dict = yaml_object['Project']
             project_dict['userId'] = self._user_id
             now = datetime.now()
-            project_dict['date'] = now.strftime("%m-%d-%Y") # We probably should not allow cli to decide DATE
+            project_dict['date'] = now.strftime("%Y/%m/%d") # We probably should not allow cli to decide DATE
             print(project_dict)
             params = project_dict
             response =  self.mutate_single(PROJECT_CREATE_FRAGMENT, params)
@@ -253,6 +257,7 @@ class AlectioClient:
             return self.project(new_project_created)
 
         return f"Failed to open file {file}"
+
 
     def upload_class_labels(self, class_labels_file, project_id):
         """
@@ -302,7 +307,7 @@ class AlectioClient:
 
         return self.experiment(new_experiment_created)
 
-    # TODO:
+
     def create_model(self, model_path):
         """
         upload model checksum and verify there are enough models to check
@@ -310,4 +315,3 @@ class AlectioClient:
         """
         return Model("", "", "", "")
 
-    # class for pagination for class elements.
