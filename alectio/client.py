@@ -108,7 +108,7 @@ class AlectioClient:
             return singular_object
 
         # job object class is slighty different in design
-        singular_object = class_to_init(self._upload_client, singular, self.user_id, hash_key)
+        singular_object = class_to_init(self._upload_client, singular, self._user_id, hash_key)
         return singular_object
 
 

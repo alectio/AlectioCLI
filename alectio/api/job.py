@@ -22,11 +22,13 @@ class Job(BaseAttribute):
         self._indices = attr['indices']
         self._data_type = attr['dataType']
 
+    @property
     def indices(self):
         """
         return the indices to upload for the job
         """
         return self._indices
+
 
     def upload_data(self, data_map):
         """
