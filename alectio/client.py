@@ -215,19 +215,6 @@ class AlectioClient:
         return self.get_single("model", MODEL_QUERY_FRAGMENT, params)
 
 
-    def jobs(self, project_id):
-        """
-        returns the list of jobs associated with a project
-        :params: project_id - list of jobs associated with a project id
-        :params: filter - condition (pending, in_prgress, data_uploaded)
-        """
-        params = {
-            "id": str(project_id),
-            "userId": self._user_id
-        }
-        return self.get_collection("jobs", JOBS_QUERY_FRAGMENT, params)
-
-
     def job(self, job_id, project_id):
         """
         returns a single labeling job
