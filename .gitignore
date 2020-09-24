@@ -2,3 +2,5 @@ alectio/__pycache__
 api/__pycache__
 tools/__pycache__
 .DS_Store
+alectio.egg-info
+dist
