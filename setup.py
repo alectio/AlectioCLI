@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="alectio",
-    version="0.1",
+    version="0.1.1",
     author="Alectio",
     author_email="aureliano.yepez@alectio.com",
     description="Alectio Python CLI",

@@ -43,11 +43,12 @@ class AlectioClient:
         self._settings = {
             'git_remote': "origin",
             #'base_url': "https://api.alectio.com"
-            'base_url': "http://localhost:5005"
+            'env_base_url': "http://localhost:5005",
+            'prod_base_url': "https://api.alectio.com"
         }
 
         # self._endpoint = f'{self._settings['base_url']}/graphql'
-        self._endpoint = self._settings['base_url'] + "/graphql"
+        self._endpoint = self._settings['prod_base_url'] + "/graphql"
 
         # graphql client
         self._client = Client(
@@ -61,7 +62,7 @@ class AlectioClient:
 
         # client to upload files, images, etc.
         # uses https://pypi.org/project/aiogqlc/
-        self._upload_client = GraphQLClient('http://localhost:5005/graphql')
+        self._upload_client = GraphQLClient(self._endpoint) # change for dev
         # self._oauth_server = 'http://localhost:5000/'
         # need to retrive user_id based on token @ DEVI from OPENID
         self._user_id = "82b4fb909f1f11ea9d300242ac110002" # ideally this should be set already. Dummy one will be set when init is invoked
