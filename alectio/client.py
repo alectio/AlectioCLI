@@ -35,8 +35,6 @@ class AlectioClient:
             raise APIKeyNotFound
 
         self._api_key = self._environ['ALECTIO_API_KEY']
-        self._client_secret = self._environ['CLIENT_SECRET']
-        self._client_id = self._environ['CLIENT_ID']
         self._client_token = None
 
         # cli user settings
@@ -63,30 +61,31 @@ class AlectioClient:
         # client to upload files, images, etc.
         # uses https://pypi.org/project/aiogqlc/
         self._upload_client = GraphQLClient(self._endpoint) # change for dev
-        # self._oauth_server = 'http://localhost:5000/'
+        self._oauth_server = 'https://auth.alectio.com/'
         # need to retrive user_id based on token @ DEVI from OPENID
         self._user_id = "82b4fb909f1f11ea9d300242ac110002" # ideally this should be set already. Dummy one will be set when init is invoked
         # compnay id = 7774e1ca972811eaad5238c986352c36s
         # self.dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
-    def request_client_token(self):
-        pass
+    def set_user_id(self, token):
+        headers = {"Authorization": "Bearer " + self._client_token['access_token']}
+        requests_data = requests.get(
+            url=self._oauth_server + 'api/me', headers=headers)
+        if requests_data.status_code == 401:
+            print("Client Token Expired. Please run alectio-kms --refresh")
+        elif requests_data.status_code == 200:
+            requests_data = requests_data.json()
+            self._user_id = requests_data['id']
 
-    def init(self, file_path=None):
-        if file_path and self._client_token is None:
-            with open(file_path, 'r') as f:
-                self._client_token = json.load(f)
-            headers = {"Authorization": "Bearer " + self._client_token['access_token']}
-            requests_data = requests.get(
-                url=self._oauth_server + 'api/me', headers=headers)
-            if requests_data.status_code == 401:
-                print("Client Token Expired. Fetching new one.")
-                self.request_client_token()
-            elif requests_data.status_code == 200:
-                requests_data = requests_data.json()
-                self._user_id = requests_data['id']
-                print(self._user_id)
+    def init(self, token=None,file_path='/opt/alectio/client_token.json'):
+        if token:
+            self.set_user_id(token)
+        else:
+            if file_path and self._client_token is None:
+                with open(file_path, 'r') as f:
+                    self._client_token = json.load(f)
+                self.set_user_id(self._client_token['access_token'])
 
 
     def get_single(self, resource, query_string, params):
